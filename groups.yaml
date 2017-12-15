@@ -1,0 +1,132 @@
+  default_view:
+      view: yes
+      icon: mdi:home
+      entities:
+      - group.Status
+      - group.Yahoo_td
+      - group.Yahoo_tm
+      - group.Lights
+      - group.mqtt_sensors
+      - group.actuators
+      - group.tempprobes
+      - group.people
+
+  Persianas_View:
+      view: yes
+      name: Persianas
+      entities:
+      - group.Persianas_Group
+
+  Persianas_Group:
+      name: Persianas
+      entities:
+      - cover.persiana_comedor_level
+      - sensor.persiana_comedor_level_current_position
+      
+
+  Graphs_View:
+      view: yes
+      name: Graphs
+      entities:
+      - group.Graphs_Group
+
+  Graphs_Group:
+      name: Graphs
+      entities:
+      - history_graph.temperature
+
+  Battery_View:
+      view: yes
+      name: Batteries
+      entities:
+      - group.Batteries_Group
+
+  Batteries_Group:
+      name: Battery Status
+      entities:
+      - sensor.flood_bano1_battery_level
+      - sensor.flood_cocina_battery_level
+      - sensor.flood_lavadora_battery_level
+      - sensor.flood_lavavajillas_battery_level
+      - sensor.pir_bano_battery_level
+
+#   forecast_hourly:
+#       name: Forecast Hourly
+#       entities:
+#       - sensor.weather_symbol
+#       - sensor.weather_temperature
+#       - sensor.weather_precipitation
+#       - sensor.weather_humidity
+#       - sensor.weather_cloudiness
+
+  Yahoo_td:   
+    name: Weather Today
+    entities:
+      - sensor.solar_angle
+      - sensor.yw_td_temperature_min
+      - sensor.yw_td_temperature_max
+
+  Yahoo_tm:
+      name: Forecast 24h
+      entities:
+      - sensor.yw_tm_temperature_min
+      - sensor.yw_tm_temperature_max
+
+  Status:
+      name: Status
+      entities:
+      - sensor.log_db_file_size
+      - sensor.persiana_comedor_level_current_position
+
+  Lights:
+      name: Lights
+      control: hidden
+      entities:
+      - switch.luces_jardin_switch
+      - switch.luces_jardin_switch_2
+      - switch.luces_bano1_switch_2
+      - switch.luces_bano1_switch_3
+      - input_number.slider_luces_pasillo
+      - switch.luces_pasillo_switch_2
+      - input_number.slider_luces_hab2_techo
+      - switch.luces_hab2_switch_2
+
+  mqtt_sensors:
+      name: mqtt sensors
+      entities:
+      - sensor.mqtt_wipy1_heartbeat
+      - sensor.mqtt_wipy1_battery
+
+  actuators:
+      control: hidden
+      name: Automations
+      entities:
+      - automation.Flood_LavavajillasNotify_MovedAlarm
+      - automation.Flood_LavavajillasNotify_FloodAlarm
+      - automation.Flood_CocinaNotify_MovedAlarm
+      - automation.Flood_CocinaNotify_FloodAlarm
+      - automation.Flood_LavadoraNotify_MovedAlarm
+      - automation.Flood_LavadoraNotify_FloodAlarm
+      - automation.Flood_BanoNotify_MovedAlarm
+      - automation.Flood_Bano1Notify_FloodAlarm
+      - script.message_temperature
+      - script.request_ios_location_update
+      - script.testing_test1
+      - script.testing_test2
+  
+  tempprobes:
+      name: Temperature sensors
+      entities:
+      - sensor.Flood_Lavavajillas_temperature
+      - sensor.Flood_Cocina_temperature
+      - sensor.Flood_Lavadora_temperature
+      - sensor.Flood_Bano1_temperature
+      - sensor.pir_bano_temperature
+  
+  people:
+      name: People
+      entities:
+      - sensor.iphonem_battery_state
+      - sensor.iphonem_battery_level
+      - sensor.iphonem
+

@@ -1,0 +1,70 @@
+  message_temperature:
+    sequence:
+        service: persistent_notification.create
+        data_template:
+          message: Current temperature is {{ states.sensor.temperature.state }}
+
+  request_ios_location_update:
+    sequence:
+      service: notify.ios_iphonem
+      data:
+        message: "request_location_update"
+
+  testing_test1:
+    sequence:
+        - condition: numeric_state
+          entity_id: sensor.iphonem_battery_level
+          below: 98 
+        - service: notify.ios_iphonem
+          data:
+            title: "Home Assistant"
+            message: "Mat please plug in your iphone"
+        - service: persistent_notification.create
+          data_template:
+            message: "Mat please plug in your iphone ({{ states('sensor.iphonem_battery_level') }}%)"
+
+  testing_test2:
+    sequence:
+        - condition: numeric_state
+          entity_id: sensor.iphonem_battery_level
+          above: 60 
+          
+        - service: persistent_notification.create
+          data_template:
+            message: "Mat your iphone is OK {{ states('sensor.iphonem_battery_level') }}%"
+
+  timed_luces_pasillo:
+    alias: "Set timer luces_pasillo"
+    sequence:
+      # Cancel ev. old timers
+      - service: script.turn_off
+        data:
+           entity_id: script.timed_luces_pasillo_off
+      # Set new timer
+      - service: script.turn_on
+        data:
+          entity_id: script.timed_luces_pasillo_off
+  timed_luces_pasillo_off:
+    alias: "Turn off luces_pasillo"
+    sequence:
+      - delay: '00:{{ states.input_number.slider_luces_pasillo.state | int }}:00'
+      - service: homeassistant.turn_off
+        entity_id: switch.luces_pasillo_switch_2
+
+  timed_luces_hab2_techo:
+    alias: "Set timer luces_hab2_techo"
+    sequence:
+      # Cancel ev. old timers
+      - service: script.turn_off
+        data:
+           entity_id: script.timed_hab2_techo_off
+      # Set new timer
+      - service: script.turn_on
+        data:
+          entity_id: script.timed_hab2_techo_off
+  timed_hab2_techo_off:
+    alias: "Turn off luces_hab2_techo"
+    sequence:
+      - delay: '00:{{ states.input_number.slider_luces_hab2.state | int }}:00'
+      - service: homeassistant.turn_off
+        entity_id: switch.luces_hab2_switch_2

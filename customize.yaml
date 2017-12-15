@@ -1,0 +1,25 @@
+switch.luces_jardin_switch:
+  friendly_name: 'Luces jardin lateral'
+switch.luces_jardin_switch_2:
+  friendly_name: 'Luces jardin techo'
+
+switch.luces_bano1_switch:
+  friendly_name: 'Luces baño1'
+switch.luces_bano1_switch_2:
+  friendly_name: 'Luces baño1 techo'
+switch.luces_bano1_switch_3:
+  friendly_name: 'Luces baño1 espejo'
+
+switch.luces_pasillo_switch:
+  friendly_name: 'Luces pasillo'
+switch.luces_pasillo_switch_2:
+  friendly_name: 'Luces pasillo techo'
+switch.luces_pasillo_switch_3:
+  friendly_name: 'Luces pasillo (sin uso)'
+
+switch.luces_hab2_switch_2:
+  friendly_name: 'Luces Claudio techo'
+
+sensor.log_db_file_size:
+  friendly_name: Home Assistant Log Db
+  icon: mdi:database
