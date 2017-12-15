@@ -1,0 +1,234 @@
+homeassistant:
+  # Name of the location where Home Assistant is runnings
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: 41.4171815
+  longitude: 2.14007
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 152
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: Europe/Madrid
+  # Customization file
+  customize: !include customize.yaml
+
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+# Enables iOS component
+ios:
+
+http:
+  api_password: !secret http_password
+  # server_port: 443
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  base_url: https://hasscasa.duckdns.org
+  ssl_certificate: /etc/letsencrypt/live/hasscasa.duckdns.org/fullchain.pem
+  ssl_key: /etc/letsencrypt/live/hasscasa.duckdns.org/privkey.pem
+  trusted_networks:
+    - 127.0.0.1
+    - ::1
+    - 192.168.0.0/24
+  ip_ban_enabled: True
+  login_attempts_threshold: 5
+
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  include_used_components: true
+
+mqtt:
+  broker: 127.0.0.1
+#   username: homeassistant
+#   password: homeassistant
+
+# Discover some devices automatically
+discovery:
+
+recorder:
+  purge_interval: 2
+  purge_keep_days: 5
+  db_url: sqlite:////home/homeassistant/.homeassistant/home-assistant_v2.db
+  exclude:
+    domains:
+      - automation
+      - weblink
+      - updater
+    entities:
+      - sun.sun
+
+zwave:
+  usb_path: /dev/ttyACM0
+  config_path: /etc/openzwave/
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Track the sun
+sun:
+
+# # Weather prediction
+# sensor:
+#   - platform: yr
+#     name: Weather
+#     forecast: 24
+#     monitored_conditions:
+#       - temperature
+#       - symbol
+#       - precipitation
+#       - windSpeed
+#       - pressure
+#       - humidity
+#       - fog
+#       - cloudiness
+
+
+
+sensor:
+  - platform: yweather
+    name: yw_td
+    woeid: 20078604
+    monitored_conditions:
+    #   - condition
+    #   - current
+    #   - humidity
+    #   - pressure
+      - temp_min
+      - temp_max
+      - weather_current
+    #   - temperature_max
+    #   - temperature_min
+    #   - visibility
+    #   - wind_speed
+
+  - platform: yweather
+    name: yw_tm
+    woeid: 20078604
+    forecast: 1
+    monitored_conditions:
+      - weather
+      - temp_min
+      - temp_max
+
+  - platform: mqtt
+    name: "mqtt_wipy1_heartbeat"
+    state_topic: "hass/wipy1/heartbeat"
+
+  - platform: mqtt
+    name: "mqtt_wipy1_battery"
+    state_topic: "hass/wipy1/battery"
+    value_template: "{{ value[value|length-6:] }}"
+    unit_of_measurement: "Volts"
+
+  - platform: command_line
+    name: "log_db_file_size"
+    command: "du -m /home/homeassistant/.homeassistant/home-assistant_v2.db | cut -f1"
+    scan_interval: 3600
+    unit_of_measurement: 'MB'
+    value_template: '{{ value | int - 1 }}'
+
+  - platform: template
+    sensors:
+      flood_bano1_battery_level:
+          friendly_name: "Flood_bano1 (battery)"
+          unit_of_measurement: "%"
+          value_template: "{{ states.zwave.flood_bano1.attributes.battery_level }}"
+
+      flood_cocina_battery_level:
+          friendly_name: "Flood_cocina (battery)"
+          unit_of_measurement: "%"
+          value_template: "{{ states.zwave.flood_cocina.attributes.battery_level }}"
+
+      flood_lavadora_battery_level:
+          friendly_name: "Flood_lavadora (battery)"
+          unit_of_measurement: "%"
+          value_template: "{{ states.zwave.flood_lavadora.attributes.battery_level }}"
+
+      flood_lavavajillas_battery_level:
+          friendly_name: "Flood_lavavajillas (battery)"
+          unit_of_measurement: "%"
+          value_template: "{{ states.zwave.flood_lavavajillas.attributes.battery_level }}"
+
+      pir_bano_battery_level:
+          friendly_name: "Pir_Baño (battery)"
+          unit_of_measurement: "%"
+          value_template: "{{ states.zwave.pir_bano.attributes.battery_level }}"
+
+      persiana_comedor_level_current_position:
+         friendly_name: "Persiana Comedor (pos)"
+         unit_of_measurement: "%"
+         value_template: "{{ 100 - states.cover.persiana_comedor_level.attributes.current_position }}"
+
+      solar_angle:
+         friendly_name: "Sun Angle"
+         unit_of_measurement: "degrees"
+         value_template: "{{ '%+.1f' | format(states.sun.sun.attributes.elevation) }}"
+
+
+input_number:
+  slider_luces_pasillo:
+    name: Timer pasillo
+    initial: 10
+    min: 2
+    max: 60
+    step: 5
+    unit_of_measurement: seconds
+    icon: mdi:timer
+
+  slider_luces_hab2_techo:
+    name: Timer hab2 techo
+    initial: 30
+    min: 10
+    max: 60
+    step: 5
+    unit_of_measurement: seconds
+    icon: mdi:timer
+
+history_graph: 
+  temperature:
+    name: Temperature
+    entities:
+      - sensor.Flood_Lavadora_temperature
+      - sensor.flood_bano1_temperature
+      - sensor.flood_cocina_temperature
+      - sensor.flood_lavavajillas_temperature
+      - sensor.pir_bano_temperature
+    refresh: 120
+    hours_to_show: 24
+
+influxdb:
+  host: 127.0.0.1
+  # database_connection_pool_size: 20
+  username: !secret influxdb_user
+  password: !secret influxdb_pass
+
+notify:
+  - name: matias
+    platform: smtp
+    server: smtp.gmail.com
+    port: 587
+    timeout: 15
+    sender: !secret gmail_sender
+    encryption: starttls
+    username: !secret gmail_sender
+    password: !secret gmail_pass
+    recipient:
+      - !secret gmail_sender
+    sender_name: Home Assistant
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+
+panel_iframe:
+  configurator:
+    title: Configurator
+    icon: mdi:wrench
+    url: http://192.168.1.112:3218

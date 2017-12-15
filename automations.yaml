@@ -1,0 +1,431 @@
+
+    # - id: heal_zwave_network
+    #   alias: Heal Z-Wave Network
+    #   initial_state: 'on'
+    #   trigger:
+    #     platform: time
+    #     at: '3:00:00'
+    #   action:
+    #     service: zwave.heal_network
+
+    - id: update_available_notification
+      alias: "Update Available Notification"
+      initial_state: 'on'
+      trigger:
+        platform: state
+        entity_id: updater.updater
+      action:
+        - service: persistent_notification.create
+          data:
+            title: "Update Available"
+            message: >
+              Home Assistant {{ states('updater.updater') }} is available, please [update](https://home-assistant.io/getting-started/installation-raspberry-pi-all-in-one/#upgrading).
+            notification_id: "update_available"
+
+    # - id: hass_shutdown_notification
+    #   alias: Home Assistant shut down
+    #   initial_state: True
+    #   trigger:
+    #     platform: homeassistant
+    #     event: start
+    #   action:
+    #     - service: notify.matias
+    #       data:
+    #         message: "Home Assistant shut down"
+    #     - service: notify.ios_iphonem
+    #       data:
+    #         title: "Home Assistant shut down"
+    #         message: "Home Assistant has been shut down."
+
+    - id: Flood_Lavavajillas_notification
+      alias: 'Flood_LavavajillasNotify_MovedAlarm'
+      initial_state: True
+      trigger:
+        platform: numeric_state
+        entity_id: sensor.Flood_Lavavajillas_burglar
+        above: 2
+        below: 4
+      action:
+        - service: notify.matias
+          data:
+            message: Flood_Lavavajillas sensor has been moved
+            title: Flood_Lavavajillas sensor moved
+
+    - id: Flood_Lavavajillas_notification
+      alias: 'Flood_LavavajillasNotify_FloodAlarm'
+      initial_state: True
+      trigger:
+        platform: numeric_state
+        entity_id: sensor.Flood_Lavavajillas_flood
+        above: 1
+        below: 3
+      action:
+        - service: notify.matias
+          data:
+            message: Flood_Lavavajillas sensor has been moved
+            title: Flood_Lavavajillas sensor moved
+        - service: persistent_notification.create
+          data_template:
+            message: "Flood_Lavavajillas flood alarm!"
+
+    - id: Flood_Cocina_notification
+      alias: 'Flood_CocinaNotify_MovedAlarm'
+      initial_state: True
+      trigger:
+        platform: numeric_state
+        entity_id: sensor.Flood_Cocina_burglar
+        above: 2
+        below: 4
+      action:
+        - service: notify.matias
+          data:
+            message: Flood_Cocina sensor has been moved
+            title: Flood_Cocina sensor moved
+
+    - id: Flood_Cocina_notification
+      alias: 'Flood_CocinaNotify_FloodAlarm'
+      initial_state: True
+      trigger:
+        platform: numeric_state
+        entity_id: sensor.Flood_Cocina_flood
+        above: 1
+        below: 3
+      action:
+        - service: notify.matias
+          data:
+            message: Flood_Cocina sensor has been moved
+            title: Flood_Cocina sensor moved
+        - service: persistent_notification.create
+          data_template:
+            message: "Flood_Cocina flood alarm!"
+            
+    - id: Flood_Lavadora_notification
+      alias: 'Flood_LavadoraNotify_MovedAlarm'
+      initial_state: True
+      trigger:
+        platform: numeric_state
+        entity_id: sensor.flood_lavadora_burglar
+        above: 2
+        below: 4
+      action:
+        - service: notify.matias
+          data:
+            message: Flood_Lavadora sensor has been moved
+            title: Flood_Lavadora sensor moved
+
+    - id: Flood_Lavadora_notification
+      alias: 'Flood_LavadoraNotify_FloodAlarm'
+      initial_state: True
+      trigger:
+        platform: numeric_state
+        entity_id: sensor.flood_lavadora_flood
+        above: 1
+        below: 3
+      action:
+        - service: notify.matias
+          data:
+            message: Flood_Lavadora sensor flood alarm
+            title: Flood_Lavadora sensor sensor flood alarm
+        - service: persistent_notification.create
+          data_template:
+            message: "Flood_Lavadora flood alarm!"
+
+    - id: Flood_Bano1_notification
+      alias: 'Flood_BanoNotify_MovedAlarm'
+      initial_state: True
+      trigger:
+        platform: numeric_state
+        entity_id: sensor.flood_bano1_burglar
+        above: 2
+        below: 4
+      action:
+        - service: notify.matias
+          data:
+            message: Flood_Bano1 sensor has been moved
+            title: Flood_Bano1 sensor moved
+
+    - id: Flood_Bano1_notification
+      alias: 'Flood_Bano1Notify_FloodAlarm'
+      initial_state: True
+      trigger:
+        platform: numeric_state
+        entity_id: sensor.flood_bano1_flood
+        above: 1
+        below: 3
+      action:
+        - service: notify.matias
+          data:
+            message: Flood_Bano1 sensor flood alarm
+            title: Flood_Bano1 sensor sensor flood alarm
+        - service: persistent_notification.create
+          data_template:
+            message: "Flood_Bano1 flood alarm!"
+
+    - id: start_flood_notifications
+      alias: Start flood automations
+      initial_state: True
+      trigger:
+        platform: homeassistant
+        event: start
+      action:
+        - delay:
+            seconds: 3
+        - service: automation.turn_on
+          entity_id:
+            - automation.Flood_LavavajillasNotify_FloodAlarm
+            - automation.Flood_CocinaNotify_FloodAlarm
+            - automation.Flood_LavadoraNotify_FloodAlarm
+            - automation.Flood_Bano1Notify_FloodAlarm
+            # - automation.Flood_LavavajillasNotify_MovedAlarm
+            # - automation.Flood_CocinaNotify_MovedAlarm
+            # - automation.Flood_Lavadora_MovedAlarm
+            # - automation.Flood_BanoNotify_MovedAlarm
+
+    
+    - id: iphonem_request_updates
+      alias: Request updates from iphonem every hour
+      initial_state: True
+      trigger:
+        platform: time
+        minutes: 0
+        seconds: 00
+      condition:
+        condition: numeric_state
+        entity_id: sensor.iphonem_battery_level
+        above: 10        
+      action:
+          - service: notify.ios_iphonem
+            data:
+                message: "request_location_update"
+
+    - id: turnoffextlight1
+      alias: Turn off external lights when closing main covers
+      initial_state: True
+      trigger:
+        platform: state
+        entity_id: cover.persiana_comedor_level
+        from: 'open'
+        to: 'closed'
+      condition:
+        condition: and
+        conditions:
+            - condition: or
+              conditions:
+                - condition: time
+                  after: '20:00:00'
+                - condition: time
+                  before: '07:00:00'
+            - condition: or
+              conditions:
+                - condition: numeric_state
+                  entity_id: sensor.luces_jardin_power
+                  above: 10
+                - condition: numeric_state
+                  entity_id: sensor.luces_jardin_power_2
+                  above: 10
+      action:
+        - service: homeassistant.turn_off
+          entity_id: switch.luces_jardin_switch
+        - service: homeassistant.turn_off
+          entity_id: switch.luces_jardin_switch_2
+        - service: notify.ios_iphonem
+          data:
+            title: "Home Assistant"
+            message: "Auto turned off external lights (closed shutter)"
+
+    - id: turnofflightsatnight
+      alias: Turn off lights we forgot about at night
+      initial_state: True
+      trigger:
+        platform: time
+        hours: 00
+        minutes: 00
+        seconds: 00
+      condition:
+        condition: and
+        conditions:
+            - condition: or
+              conditions:
+                - condition: time
+                  after: '22:00:00'
+                - condition: time
+                  before: '07:00:00'
+            - condition: or
+              conditions:
+                - condition: numeric_state
+                  entity_id: sensor.luces_jardin_power
+                  above: 10
+                - condition: numeric_state
+                  entity_id: sensor.luces_jardin_power_2
+                  above: 10
+      action:
+        # - delay: '00:{{ (range(1, 59)|random|int) }}:00'
+        - service: homeassistant.turn_off
+          entity_id: switch.luces_jardin_switch
+        - service: homeassistant.turn_off
+          entity_id: switch.luces_jardin_switch_2
+        - service: notify.ios_iphonem
+          data:
+            title: "Home Assistant"
+            message: "Auto turned off external lights (forgot)"
+
+    - id: turnonextlight_sun
+      alias: Turn on external lights when opening main covers at night.
+      initial_state: True
+      trigger:
+        platform: numeric_state
+        entity_id: sensor.persiana_comedor_level_current_position
+        below: 95
+      condition:
+        condition: and
+        conditions:
+            - condition: numeric_state
+              entity_id: sensor.solar_angle
+              below: 0
+            - condition: or
+              conditions:
+                - condition: numeric_state
+                  entity_id: sensor.luces_jardin_power
+                  below: 10
+                - condition: numeric_state
+                  entity_id: sensor.luces_jardin_power_2
+                  below: 10
+      action:
+        - service: homeassistant.turn_on
+          entity_id: switch.luces_jardin_switch
+        - service: homeassistant.turn_on
+          entity_id: switch.luces_jardin_switch_2
+        - service: notify.ios_iphonem
+          data:
+            title: "Home Assistant"
+            message: "Auto turned on external lights"
+
+    - id: turnoffextlight_sun
+      alias: Turn off external lights at dawn.
+      initial_state: True
+      trigger:
+        platform: numeric_state
+        entity_id: sensor.solar_angle
+        above: 5
+      condition:
+        condition: or
+        conditions:
+          - condition: numeric_state
+            entity_id: sensor.luces_jardin_power
+            above: 10
+          - condition: numeric_state
+            entity_id: sensor.luces_jardin_power_2
+            above: 10
+      action:
+        - service: homeassistant.turn_off
+          entity_id: switch.luces_jardin_switch
+        - service: homeassistant.turn_off
+          entity_id: switch.luces_jardin_switch_2
+        - service: notify.ios_iphonem
+          data:
+            title: "Home Assistant"
+            message: "Auto turned off external lights at dawn"
+
+    - id: turnofftoilet_nopir_1
+      alias: Turn off toilet1 light 5 minutes after last movement
+      trigger:
+        platform: state
+        entity_id: binary_sensor.pir_bano_sensor
+        to: 'off'
+        for:
+          minutes: 3
+      condition:
+        condition: or
+        conditions:
+            - condition: numeric_state
+              entity_id: sensor.luces_bano1_power 
+              above: 10
+      action:
+        - service: homeassistant.turn_off
+          entity_id: switch.luces_bano1_switch
+        - service: homeassistant.turn_off
+          entity_id: switch.luces_bano1_switch_2
+        - service: homeassistant.turn_off
+          entity_id: switch.luces_bano1_switch_3
+        - service: notify.ios_iphonem
+          data:
+            title: "Home Assistant"
+            message: "Auto turned off toilet lights (forgot)"
+
+    - id: turnofftoilet_nopir_2
+      alias: Turn off toilet1 light mirror 2 minutes after last movement
+      trigger:
+        platform: state
+        entity_id: binary_sensor.pir_bano_sensor
+        to: 'off'
+        for:
+          minutes: 1
+      condition:
+        condition: or
+        conditions:
+            - condition: numeric_state
+              entity_id: sensor.luces_bano1_power_2
+              above: 10
+      action:
+        - service: homeassistant.turn_off
+          entity_id: switch.luces_bano1_switch
+        - service: homeassistant.turn_off
+          entity_id: switch.luces_bano1_switch_2
+        - service: homeassistant.turn_off
+          entity_id: switch.luces_bano1_switch_3
+        - service: notify.ios_iphonem
+          data:
+            title: "Home Assistant"
+            message: "Auto turned off mirror toilet lights (forgot)"
+
+    - alias: Auto-turn off light pasillo
+      trigger:
+        platform: state
+        entity_id: switch.luces_pasillo_switch_2
+        to: 'on'
+      action:
+        service: homeassistant.turn_on
+        entity_id: script.timed_luces_pasillo
+
+    - alias: Auto-turn off light hab2_techo
+      trigger:
+        platform: state
+        entity_id: switch.luces_hab2_switch_2
+        to: 'on'
+      action:
+        service: homeassistant.turn_on
+        entity_id: script.timed_luces_hab2_techo
+
+    # - id: iphonem_send_battery_reminder
+    #   alias: Send reminder iPhone
+    #   initial_state: True
+    #   trigger:
+    #     platform: time
+    #     at: '22:59:00'
+    #   condition:
+    #     condition: numeric_state
+    #     entity_id: sensor.iphonem_battery_level
+    #     below: 60        
+    #   action:
+    #     - service: persistent_notification.create
+    #       data_template:
+    #         message: "Mat please plug in your iphone {{ states('sensor.iphonem_battery_level') }}%"
+    #     - service: notify.ios_iphonem
+    #       data:
+    #         title: "Home Assistant"
+    #         message: "Mat please plug in your iphone"
+    #     - service: persistent_notification.create
+    #       data_template:
+    #         message: "Mat please plug in your iphone {{ states('sensor.iphonem_battery_level') }}%"
+
+    # - alias: 'Turn On Outside Lights'
+    #   trigger:
+    #     platform: sun
+    #     event: sunset
+    #     offset: '-00:15:00'
+    #   action:
+    #     - service: homeassistant.turn_on
+    #         entity_id: group.outside_lights
+
+      
+
