@@ -27,7 +27,7 @@ http:
   api_password: !secret http_password
   # server_port: 443
   # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
-  base_url: https://hasscasa.duckdns.org
+  base_url: !secret baseurl
   ssl_certificate: /etc/letsencrypt/live/hasscasa.duckdns.org/fullchain.pem
   ssl_key: /etc/letsencrypt/live/hasscasa.duckdns.org/privkey.pem
   trusted_networks:

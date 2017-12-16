@@ -326,14 +326,33 @@
             title: "Home Assistant"
             message: "Auto turned off external lights at dawn"
 
+    - id: turnontoilet_onpir_1
+      alias: Turn on toilet1 light if there is movement at night
+      trigger:
+        platform: state
+        entity_id: binary_sensor.pir_bano_sensor
+        to: 'on'
+      condition:
+        condition: and
+        conditions:
+            - condition: numeric_state
+              entity_id: sensor.luces_bano1_power 
+              below: 10
+            - condition: numeric_state
+              entity_id: sensor.pir_bano_luminance
+              below: 10
+      action:
+        - service: homeassistant.turn_on
+          entity_id: switch.luces_bano1_switch_2
+
     - id: turnofftoilet_nopir_1
-      alias: Turn off toilet1 light 5 minutes after last movement
+      alias: Turn off toilet1 light 10 minutes after last movement
       trigger:
         platform: state
         entity_id: binary_sensor.pir_bano_sensor
         to: 'off'
         for:
-          minutes: 3
+          minutes: 10
       condition:
         condition: or
         conditions:
@@ -359,7 +378,7 @@
         entity_id: binary_sensor.pir_bano_sensor
         to: 'off'
         for:
-          minutes: 1
+          minutes: 2
       condition:
         condition: or
         conditions:
