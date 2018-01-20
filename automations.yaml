@@ -22,20 +22,6 @@
               Home Assistant {{ states('updater.updater') }} is available, please [update](https://home-assistant.io/getting-started/installation-raspberry-pi-all-in-one/#upgrading).
             notification_id: "update_available"
 
-    # - id: hass_shutdown_notification
-    #   alias: Home Assistant shut down
-    #   initial_state: True
-    #   trigger:
-    #     platform: homeassistant
-    #     event: start
-    #   action:
-    #     - service: notify.matias
-    #       data:
-    #         message: "Home Assistant shut down"
-    #     - service: notify.ios_iphonem
-    #       data:
-    #         title: "Home Assistant shut down"
-    #         message: "Home Assistant has been shut down."
 
     - id: Flood_Lavavajillas_notification
       alias: 'Flood_LavavajillasNotify_MovedAlarm'
@@ -98,7 +84,7 @@
         - service: persistent_notification.create
           data_template:
             message: "Flood_Cocina flood alarm!"
-            
+
     - id: Flood_Lavadora_notification
       alias: 'Flood_LavadoraNotify_MovedAlarm'
       initial_state: True
@@ -181,7 +167,7 @@
             # - automation.Flood_Lavadora_MovedAlarm
             # - automation.Flood_BanoNotify_MovedAlarm
 
-    
+ 
     - id: iphonem_request_updates
       alias: Request updates from iphonem every hour
       initial_state: True
@@ -192,7 +178,7 @@
       condition:
         condition: numeric_state
         entity_id: sensor.iphonem_battery_level
-        above: 10        
+        above: 10 
       action:
           - service: notify.ios_iphonem
             data:
@@ -202,10 +188,9 @@
       alias: Turn off external lights when closing main covers
       initial_state: True
       trigger:
-        platform: state
-        entity_id: cover.persiana_comedor_level
-        from: 'open'
-        to: 'closed'
+        platform: numeric_state
+        entity_id: sensor.persiana_comedor_level_current_position
+        above: 95
       condition:
         condition: and
         conditions:
@@ -327,7 +312,7 @@
             message: "Auto turned off external lights at dawn"
 
     - id: turnontoilet_onpir_1
-      alias: Turn on toilet1 light if there is movement at night
+      alias: Turn on toilet1 light if there is movement and it's dark
       trigger:
         platform: state
         entity_id: binary_sensor.pir_bano_sensor
@@ -335,18 +320,23 @@
       condition:
         condition: and
         conditions:
-            - condition: numeric_state
-              entity_id: sensor.luces_bano1_power 
-              below: 10
+          # Add luminosity condition
+            # - condition: numeric_state
+            #   entity_id: sensor.solar_angle
+            #   below: 10
             - condition: numeric_state
               entity_id: sensor.pir_bano_luminance
+              below: 5
+            - condition: numeric_state
+              entity_id: sensor.luces_bano1_power
               below: 10
+
       action:
         - service: homeassistant.turn_on
           entity_id: switch.luces_bano1_switch_2
 
     - id: turnofftoilet_nopir_1
-      alias: Turn off toilet1 light 10 minutes after last movement
+      alias: Turn off toilet1 lights 10 minutes after last movement
       trigger:
         platform: state
         entity_id: binary_sensor.pir_bano_sensor
@@ -357,7 +347,7 @@
         condition: or
         conditions:
             - condition: numeric_state
-              entity_id: sensor.luces_bano1_power 
+              entity_id: sensor.luces_bano1_power
               above: 10
       action:
         - service: homeassistant.turn_off
@@ -372,7 +362,7 @@
             message: "Auto turned off toilet lights (forgot)"
 
     - id: turnofftoilet_nopir_2
-      alias: Turn off toilet1 light mirror 2 minutes after last movement
+      alias: Turn off toilet1 mirror light 2 minutes after last movement
       trigger:
         platform: state
         entity_id: binary_sensor.pir_bano_sensor
@@ -386,16 +376,43 @@
               entity_id: sensor.luces_bano1_power_2
               above: 10
       action:
-        - service: homeassistant.turn_off
-          entity_id: switch.luces_bano1_switch
-        - service: homeassistant.turn_off
-          entity_id: switch.luces_bano1_switch_2
+
         - service: homeassistant.turn_off
           entity_id: switch.luces_bano1_switch_3
         - service: notify.ios_iphonem
           data:
             title: "Home Assistant"
             message: "Auto turned off mirror toilet lights (forgot)"
+
+    - id: tune_slider_luces_day
+      trigger:
+        platform: numeric_state
+        entity_id: sensor.solar_angle
+        above: 5
+      action:
+        - service: input_number.set_value
+          data_template:
+            entity_id: input_number.slider_luces_pasillo
+            value: '5'
+        - service: input_number.set_value
+          data_template:
+            entity_id: input_number.slider_luces_hab2_techo
+            value: '5'
+
+    - id: tune_slider_luces_night
+      trigger:
+        platform: numeric_state
+        entity_id: sensor.solar_angle
+        below: 5
+      action:
+        - service: input_number.set_value
+          data_template:
+            entity_id: input_number.slider_luces_pasillo
+            value: '20'
+        - service: input_number.set_value
+          data_template:
+            entity_id: input_number.slider_luces_hab2_techo
+            value: '20'
 
     - alias: Auto-turn off light pasillo
       trigger:
@@ -424,7 +441,7 @@
     #   condition:
     #     condition: numeric_state
     #     entity_id: sensor.iphonem_battery_level
-    #     below: 60        
+    #     below: 60 
     #   action:
     #     - service: persistent_notification.create
     #       data_template:
@@ -437,14 +454,6 @@
     #       data_template:
     #         message: "Mat please plug in your iphone {{ states('sensor.iphonem_battery_level') }}%"
 
-    # - alias: 'Turn On Outside Lights'
-    #   trigger:
-    #     platform: sun
-    #     event: sunset
-    #     offset: '-00:15:00'
-    #   action:
-    #     - service: homeassistant.turn_on
-    #         entity_id: group.outside_lights
 
       
 

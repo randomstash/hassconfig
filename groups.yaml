@@ -35,6 +35,7 @@
       entities:
       - history_graph.temperature
 
+
   Battery_View:
       view: yes
       name: Batteries
@@ -75,7 +76,13 @@
   Status:
       name: Status
       entities:
+      - sensor.average_load_15m
+      - sensor.ram_available
+      - sensor.disk_use_percent
       - sensor.log_db_file_size
+      - sensor.speedtest_ping
+      - sensor.speedtest_download
+      - sensor.speedtest_upload
       - sensor.persiana_comedor_level_current_position
 
   Lights:
@@ -101,6 +108,8 @@
       control: hidden
       name: Automations
       entities:
+      - script.luces_pasillo_1h_timer
+      - script.luces_pasillo_1m_timer
       - automation.Flood_LavavajillasNotify_MovedAlarm
       - automation.Flood_LavavajillasNotify_FloodAlarm
       - automation.Flood_CocinaNotify_MovedAlarm
@@ -111,7 +120,6 @@
       - automation.Flood_Bano1Notify_FloodAlarm
       - script.message_temperature
       - script.request_ios_location_update
-      - script.testing_test1
       - script.testing_test2
   
   tempprobes:

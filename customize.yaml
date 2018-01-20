@@ -23,3 +23,6 @@ switch.luces_hab2_switch_2:
 sensor.log_db_file_size:
   friendly_name: Home Assistant Log Db
   icon: mdi:database
+
+sensor.average_load_15m:
+  unit_of_measurement: 'ld'

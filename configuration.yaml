@@ -2,8 +2,8 @@ homeassistant:
   # Name of the location where Home Assistant is runnings
   name: Home
   # Location required to calculate the time the sun rises and sets
-  latitude: 41.4171815
-  longitude: 2.14007
+  latitude: !secret latitude
+  longitude: !secret longitude
   # Impacts weather/sunrise data (altitude above sea level in meters)
   elevation: 152
   # metric for Metric, imperial for Imperial
@@ -60,16 +60,33 @@ recorder:
       - updater
     entities:
       - sun.sun
+      - sensor.luces_jardin_exporting
+
+# View all events in a logbook
+logbook:
+  exclude:
+    domains:
+      - automation
+      - weblink
+      - updater
+    entities:
+      - sun.sun
+      - sensor.luces_jardin_exporting
+
+# Enables support for tracking state changes over time
+history:
+  exclude:
+    domains:
+      - automation
+      - weblink
+      - updater
+    entities:
+      - sun.sun
+      - sensor.luces_jardin_exporting
 
 zwave:
   usb_path: /dev/ttyACM0
   config_path: /etc/openzwave/
-
-# Enables support for tracking state changes over time
-history:
-
-# View all events in a logbook
-logbook:
 
 # Track the sun
 sun:
@@ -116,6 +133,26 @@ sensor:
       - weather
       - temp_min
       - temp_max
+
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /
+      - type: memory_free
+      - type: load_15m
+
+  - platform: speedtest
+    server_id: 4374
+    minute: 30
+    hour:
+      - 0
+      - 6
+      - 12
+      - 18
+    monitored_conditions:
+      - ping
+      - download
+      - upload
 
   - platform: mqtt
     name: "mqtt_wipy1_heartbeat"
@@ -176,7 +213,7 @@ input_number:
   slider_luces_pasillo:
     name: Timer pasillo
     initial: 10
-    min: 2
+    min: 1
     max: 60
     step: 5
     unit_of_measurement: seconds
@@ -185,7 +222,7 @@ input_number:
   slider_luces_hab2_techo:
     name: Timer hab2 techo
     initial: 30
-    min: 10
+    min: 5
     max: 60
     step: 5
     unit_of_measurement: seconds
