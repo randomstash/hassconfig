@@ -10,88 +10,129 @@
       data:
         message: "request_location_update"
 
-  luces_pasillo_1h_timer:
-    alias: "Timer 1h luces pasillo"
+  ps4_standby:
     sequence:
-        - service: input_number.set_value
-          data_template:
-            entity_id: input_number.slider_luces_pasillo
-            value: '60'
-        - service: homeassistant.turn_on
-          entity_id: switch.luces_pasillo_switch_2
-        - service: homeassistant.turn_on
-          entity_id: script.timed_luces_pasillo
+      - service: shell_command.ps4standby
 
-  luces_pasillo_1m_timer:
-    alias: "Timer 1m luces pasillo"
+  stress_sprinkler:
     sequence:
-        - service: input_number.set_value
-          data_template:
-            entity_id: input_number.slider_luces_pasillo
-            value: '1'
-        - service: homeassistant.turn_on
-          entity_id: switch.luces_pasillo_switch_2
-        - service: homeassistant.turn_on
-          entity_id: script.timed_luces_pasillo
-          # data:
-          #   variables:
-          #     timer: '30'
-
-  timed_luces_pasillo:
-    alias: "Set timer luces_pasillo"
-    sequence:
-      # Cancel ev. old timers
-      - service: script.turn_off
-        data:
-           entity_id: script.timed_luces_pasillo_off
-      # Set new timer
-      # - service: persistent_notification.create
-      #   data_template:
-      #     message: Step 1 {{ timer | int }}
-      - service: script.turn_on
-        entity_id: script.timed_luces_pasillo_off
-        # data_template:
-        #   variables:
-        #     timer: "{{ timer | int }}"
-  timed_luces_pasillo_off:
-    alias: "Delay and turn off luces_pasillo"
-    sequence:
-      # - service: persistent_notification.create
-      #   data_template:
-      #     message: Step 2 {{ timer | int }}
-      # - service: persistent_notification.create
-      #   data:
-      #     message: "Before delay"
-      - delay: '00:{{ states.input_number.slider_luces_pasillo.state | int }}:00'
-      # - service: persistent_notification.create
-      #   data:
-      #     message: "After delay"
-      - service: homeassistant.turn_off
-        entity_id: switch.luces_pasillo_switch_2
-      # - service: persistent_notification.create
-      #   data:
-      #     message: "Step 2"
-      # - service: persistent_notification.create
-      #   data_template:
-      #     message: Step 2 {{ timer | int }}
-      # - service: input_number.set_value
-      #   data_template:
-      #     entity_id: input_number.slider_luces_pasillo
-      #     value: "{{ timer | int }}"
-
-  timed_luces_hab2_techo:
-    alias: "Set timer luces_hab2_techo"
-    sequence:
-      # Cancel ev. old timers
-      - service: script.turn_off
-        entity_id: script.timed_hab2_techo_off
-      # Set new timer
-      - service: script.turn_on
-        data:
-          entity_id: script.timed_hab2_techo_off
-  timed_hab2_techo_off:
-    alias: "Delay and turn off luces_hab2_techo"
-    sequence:
-      - delay: '00:{{ states.input_number.slider_luces_hab2_techo.state | int }}:00'
-      - service: homeassistant.turn_off
-        entity_id: switch.luces_hab2_switch_2
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'
+      - service: switch.turn_on
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:05'
+      - service: switch.turn_off
+        entity_id: switch.sprinkler1_switch_2
+      - delay: '00:00:15'

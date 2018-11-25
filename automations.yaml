@@ -162,10 +162,6 @@
             - automation.Flood_CocinaNotify_FloodAlarm
             - automation.Flood_LavadoraNotify_FloodAlarm
             - automation.Flood_Bano1Notify_FloodAlarm
-            # - automation.Flood_LavavajillasNotify_MovedAlarm
-            # - automation.Flood_CocinaNotify_MovedAlarm
-            # - automation.Flood_Lavadora_MovedAlarm
-            # - automation.Flood_BanoNotify_MovedAlarm
 
  
     - id: iphonem_request_updates
@@ -188,9 +184,14 @@
       alias: Turn off external lights when closing main covers
       initial_state: True
       trigger:
-        platform: numeric_state
-        entity_id: sensor.persiana_comedor_level_current_position
-        above: 95
+        #change to cover.persiana_comedor_level
+        #platform: numeric_state
+        platform: state
+        entity_id: cover.persiana_comedor_level
+        from: 'open'
+        to: 'closed'
+        #entity_id: sensor.persiana_comedor_level_current_position
+        #below: 20
       condition:
         condition: and
         conditions:
@@ -219,7 +220,7 @@
             message: "Auto turned off external lights (closed shutter)"
 
     - id: turnofflightsatnight
-      alias: Turn off lights we forgot about at night
+      alias: Turn off external lights we forgot about at night
       initial_state: True
       trigger:
         platform: time
@@ -252,22 +253,22 @@
         - service: notify.ios_iphonem
           data:
             title: "Home Assistant"
-            message: "Auto turned off external lights (forgot)"
+            message: "Auto turned off external lights (turnofflightsatnight)"
 
-    - id: turnonextlight_sun
+    - id: turnonextlight_open
       alias: Turn on external lights when opening main covers at night.
       initial_state: True
       trigger:
         platform: numeric_state
         entity_id: sensor.persiana_comedor_level_current_position
-        below: 95
+        below: 85
       condition:
         condition: and
         conditions:
             - condition: numeric_state
               entity_id: sensor.solar_angle
               below: 0
-            - condition: or
+            - condition: and
               conditions:
                 - condition: numeric_state
                   entity_id: sensor.luces_jardin_power
@@ -320,10 +321,6 @@
       condition:
         condition: and
         conditions:
-          # Add luminosity condition
-            # - condition: numeric_state
-            #   entity_id: sensor.solar_angle
-            #   below: 10
             - condition: numeric_state
               entity_id: sensor.pir_bano_luminance
               below: 5
@@ -344,11 +341,14 @@
         for:
           minutes: 10
       condition:
-        condition: or
+        condition: or          
         conditions:
-            - condition: numeric_state
-              entity_id: sensor.luces_bano1_power
-              above: 10
+          - condition: state
+            entity_id: switch.luces_bano1_switch_2
+            state: "on"
+          - condition: state
+            entity_id: switch.luces_bano1_switch_3
+            state: "on"            
       action:
         - service: homeassistant.turn_off
           entity_id: switch.luces_bano1_switch
@@ -361,99 +361,181 @@
             title: "Home Assistant"
             message: "Auto turned off toilet lights (forgot)"
 
-    - id: turnofftoilet_nopir_2
-      alias: Turn off toilet1 mirror light 2 minutes after last movement
+    - id: wifi_kids_off
+      initial_state: True
+      alias: Turn off wifi for kids
       trigger:
-        platform: state
-        entity_id: binary_sensor.pir_bano_sensor
-        to: 'off'
-        for:
-          minutes: 2
+        platform: time
+        hours: 20
+        minutes: 00
+        seconds: 00
       condition:
-        condition: or
+        condition: and
         conditions:
-            - condition: numeric_state
-              entity_id: sensor.luces_bano1_power_2
-              above: 10
+          - condition: state
+            entity_id: input_boolean.enable_wifi_kids
+            state: "on"
+          - condition: time
+            weekday:
+              - mon
+              - tue
+              - wed
+              - thu
+              - sun
       action:
-
-        - service: homeassistant.turn_off
-          entity_id: switch.luces_bano1_switch_3
+        - service: switch.turn_off
+          entity_id: switch.wifi_kids
         - service: notify.ios_iphonem
           data:
             title: "Home Assistant"
-            message: "Auto turned off mirror toilet lights (forgot)"
+            message: "Wifi OFF"
 
-    - id: tune_slider_luces_day
+    - id: wifi_kids_on
+      initial_state: True
+      alias: Turn on wifi for kids
       trigger:
-        platform: numeric_state
-        entity_id: sensor.solar_angle
-        above: 5
+        platform: time
+        hours: 10
+        minutes: 00
+        seconds: 00
+      condition:
+        condition: and
+        conditions:
+          - condition: state
+            entity_id: input_boolean.enable_wifi_kids
+            state: "on"
+          - condition: time
+            weekday:
+              - mon
+              - tue
+              - wed
+              - thu
+              - fri
       action:
-        - service: input_number.set_value
-          data_template:
-            entity_id: input_number.slider_luces_pasillo
-            value: '5'
-        - service: input_number.set_value
-          data_template:
-            entity_id: input_number.slider_luces_hab2_techo
-            value: '5'
+        - service: switch.turn_on
+          entity_id: switch.wifi_kids
 
-    - id: tune_slider_luces_night
+
+    - id: auto_sprinkler_morning
+      initial_state: True
+      alias: Activate automatic sprinkler (morning
       trigger:
-        platform: numeric_state
-        entity_id: sensor.solar_angle
-        below: 5
+        platform: sun
+        event: sunrise
+        offset: '01:00:00'
+      condition:
+        condition: and
+        conditions:
+          - condition: state
+            entity_id: input_boolean.enable_sprinkler_auto
+            state: "on"
+          - condition: time
+            weekday:
+              - mon
+              - tue
+              - wed
+              - thu
+              - fri
+              - sat
+              - sun
       action:
-        - service: input_number.set_value
-          data_template:
-            entity_id: input_number.slider_luces_pasillo
-            value: '20'
-        - service: input_number.set_value
-          data_template:
-            entity_id: input_number.slider_luces_hab2_techo
-            value: '20'
+        - service: switch.turn_on
+          entity_id: switch.sprinkler1_switch
+        - delay: '00:05:00'
+        - service: switch.turn_off
+          entity_id: switch.sprinkler1_switch
+        - service: switch.turn_on
+          entity_id: switch.sprinkler1_switch_2
+        - delay: '00:05:00'
+        - service: switch.turn_off
+          entity_id: switch.sprinkler1_switch_2
 
-    - alias: Auto-turn off light pasillo
+
+    - id: auto_sprinkler_evening1
+      initial_state: True
+      alias: Activate automatic sprinkler (evening)
       trigger:
-        platform: state
-        entity_id: switch.luces_pasillo_switch_2
-        to: 'on'
+        platform: sun
+        event: sunset
+        offset: '-01:00:00'
+      condition:
+        condition: and
+        conditions:
+          - condition: state
+            entity_id: input_boolean.enable_sprinkler_auto
+            state: "on"
+          - condition: time
+            weekday:
+              - mon
+              - tue
+              - wed
+              - thu
+              - fri
+              - sat
+              - sun
       action:
-        service: homeassistant.turn_on
-        entity_id: script.timed_luces_pasillo
+        - service: switch.turn_on
+          entity_id: switch.sprinkler1_switch
+        - delay: '00:01:00'
+        - service: switch.turn_off
+          entity_id: switch.sprinkler1_switch
+        - service: switch.turn_on
+          entity_id: switch.sprinkler1_switch_2
+        - delay: '00:05:00'
+        - service: switch.turn_off
+          entity_id: switch.sprinkler1_switch_2
 
-    - alias: Auto-turn off light hab2_techo
+
+    #Dash Buttons
+    - id: dashbutton01
+      alias: "6c:56:97:f7:89:3f"
+      initial_state: 'on'
       trigger:
-        platform: state
-        entity_id: switch.luces_hab2_switch_2
-        to: 'on'
+        platform: event
+        event_type: myevent_dashbutton01
       action:
-        service: homeassistant.turn_on
-        entity_id: script.timed_luces_hab2_techo
+        - service: switch.toggle
+          entity_id: switch.luces_jardin_switch_2
 
-    # - id: iphonem_send_battery_reminder
-    #   alias: Send reminder iPhone
-    #   initial_state: True
-    #   trigger:
-    #     platform: time
-    #     at: '22:59:00'
-    #   condition:
-    #     condition: numeric_state
-    #     entity_id: sensor.iphonem_battery_level
-    #     below: 60 
-    #   action:
-    #     - service: persistent_notification.create
-    #       data_template:
-    #         message: "Mat please plug in your iphone {{ states('sensor.iphonem_battery_level') }}%"
-    #     - service: notify.ios_iphonem
-    #       data:
-    #         title: "Home Assistant"
-    #         message: "Mat please plug in your iphone"
-    #     - service: persistent_notification.create
-    #       data_template:
-    #         message: "Mat please plug in your iphone {{ states('sensor.iphonem_battery_level') }}%"
+    - id: dashbutton02
+      alias: "fc:65:de:c3:e2:30"
+      initial_state: 'on'
+      trigger:
+        platform: event
+        event_type: myevent_dashbutton02
+      action:
+        - service: switch.toggle
+          entity_id: switch.luces_pasillo_switch_2
+
+    - id: dashbutton03
+      alias: "18:74:2e:1c:8a:63"
+      initial_state: 'on'
+      trigger:
+        platform: event
+        event_type: myevent_dashbutton03
+      action:
+        - service: shell_command.ps4standby
 
 
-      
+    - id: dashbutton04
+      alias: "18:74:2e:1c:8a:99"
+      initial_state: 'on'
+      trigger:
+        platform: event
+        event_type: myevent_dashbutton99
+      action:
+        - service: switch.turn_off
+          entity_id: switch.wifi_kids
+        - service: notify.ios_iphonem
+          data:
+            title: "Home Assistant"
+            message: "Wifi OFF"
+        - delay:
+            seconds: "3600"
+        - service: switch.turn_on
+          entity_id: switch.wifi_kids
+        - service: notify.ios_iphonem
+          data:
+            title: "Home Assistant"
+            message: "Wifi ON"
 

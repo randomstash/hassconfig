@@ -13,6 +13,9 @@ homeassistant:
   # Customization file
   customize: !include customize.yaml
 
+zwave:
+  usb_path: /dev/ttyACM0
+  config_path: /etc/openzwave/
 
 # Enables the frontend
 frontend:
@@ -23,13 +26,22 @@ config:
 # Enables iOS component
 ios:
 
+# Discover some devices automatically
+discovery:
+
+# Track the sun
+sun:
+
+# Enable map of tracked devices
+map:
+
 http:
   api_password: !secret http_password
   # server_port: 443
   # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
   base_url: !secret baseurl
-  ssl_certificate: /etc/letsencrypt/live/hasscasa.duckdns.org/fullchain.pem
-  ssl_key: /etc/letsencrypt/live/hasscasa.duckdns.org/privkey.pem
+  ssl_certificate: !secret ssl_certificate_path
+  ssl_key: !secret ssl_key_path
   trusted_networks:
     - 127.0.0.1
     - ::1
@@ -45,9 +57,6 @@ mqtt:
   broker: 127.0.0.1
 #   username: homeassistant
 #   password: homeassistant
-
-# Discover some devices automatically
-discovery:
 
 recorder:
   purge_interval: 2
@@ -84,46 +93,15 @@ history:
       - sun.sun
       - sensor.luces_jardin_exporting
 
-zwave:
-  usb_path: /dev/ttyACM0
-  config_path: /etc/openzwave/
-
-# Track the sun
-sun:
-
-# # Weather prediction
-# sensor:
-#   - platform: yr
-#     name: Weather
-#     forecast: 24
-#     monitored_conditions:
-#       - temperature
-#       - symbol
-#       - precipitation
-#       - windSpeed
-#       - pressure
-#       - humidity
-#       - fog
-#       - cloudiness
-
-
 
 sensor:
   - platform: yweather
     name: yw_td
     woeid: 20078604
     monitored_conditions:
-    #   - condition
-    #   - current
-    #   - humidity
-    #   - pressure
       - temp_min
       - temp_max
       - weather_current
-    #   - temperature_max
-    #   - temperature_min
-    #   - visibility
-    #   - wind_speed
 
   - platform: yweather
     name: yw_tm
@@ -228,6 +206,24 @@ input_number:
     unit_of_measurement: seconds
     icon: mdi:timer
 
+
+input_boolean:
+  enable_wifi_kids:
+    name: Enable auto-wifi kids
+    initial: on
+    icon: mdi:wifi
+
+# TODO!!
+# switch:
+#   platform: command_line
+#   switches:
+#     wifi_kids:
+#       command_on: "/usr/bin/curl -X GET http://192.168.1.10/digital/4/1"
+#       command_off: "/usr/bin/curl -X GET http://192.168.1.10/digital/4/0"
+#       command_state: "/usr/bin/curl -X GET http://192.168.1.10/digital/4"
+#       value_template: '{{ value == "1" }}'
+#       friendly_name: Kitchen Lightswitch
+
 history_graph: 
   temperature:
     name: Temperature
@@ -240,6 +236,25 @@ history_graph:
     refresh: 120
     hours_to_show: 24
 
+climate:
+  - platform: generic_thermostat
+    name: Suelo Radiante
+    heater: switch.qubino_zmnhnd1_flush_1d_relay_switch_2
+    target_sensor: sensor.qubino_zmnhnd1_flush_1d_relay_temperature
+    min_temp: 15
+    max_temp: 24
+    ac_mode: False
+    target_temp: 22.0
+    cold_tolerance: 0.3
+    hot_tolerance: 0
+    min_cycle_duration:
+      minutes: 5
+    keep_alive:
+      minutes: 5
+    initial_operation_mode: "auto"
+    # away_temp: 16
+
+
 influxdb:
   host: 127.0.0.1
   # database_connection_pool_size: 20
@@ -247,7 +262,7 @@ influxdb:
   password: !secret influxdb_pass
 
 notify:
-  - name: matias
+  - name: !secret user1
     platform: smtp
     server: smtp.gmail.com
     port: 587
@@ -268,4 +283,4 @@ panel_iframe:
   configurator:
     title: Configurator
     icon: mdi:wrench
-    url: http://192.168.1.112:3218
+    url: http://localhost:3218

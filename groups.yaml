@@ -7,9 +7,10 @@
       - group.Yahoo_tm
       - group.Lights
       - group.mqtt_sensors
-      - group.actuators
+      #- group.actuators
       - group.tempprobes
       - group.people
+      - group.wallplugs
 
   Persianas_View:
       view: yes
@@ -23,7 +24,6 @@
       - cover.persiana_comedor_level
       - sensor.persiana_comedor_level_current_position
       
-
   Graphs_View:
       view: yes
       name: Graphs
@@ -34,7 +34,6 @@
       name: Graphs
       entities:
       - history_graph.temperature
-
 
   Battery_View:
       view: yes
@@ -51,6 +50,20 @@
       - sensor.flood_lavavajillas_battery_level
       - sensor.pir_bano_battery_level
 
+  Auto_Light_View:
+      view: yes
+      name: Auto-Lights
+      entities:
+        - group.Light_Global
+        - group.Light_Pasillo
+        - group.Light_Hab2
+
+  SprinklerTab:
+      view: yes
+      name: Sprinkler
+      entities:
+        - group.SprinklerControl
+
 #   forecast_hourly:
 #       name: Forecast Hourly
 #       entities:
@@ -66,6 +79,10 @@
       - sensor.solar_angle
       - sensor.yw_td_temperature_min
       - sensor.yw_td_temperature_max
+      - sensor.qubino_zmnhnd1_flush_1d_relay_temperature
+      - sensor.qubino_zmnhnd1_flush_1d_relay_temperature_2
+      - switch.qubino_zmnhnd1_flush_1d_relay_switch_2
+      - climate.suelo_radiante
 
   Yahoo_tm:
       name: Forecast 24h
@@ -75,6 +92,7 @@
 
   Status:
       name: Status
+      control: hidden
       entities:
       - sensor.average_load_15m
       - sensor.ram_available
@@ -83,7 +101,8 @@
       - sensor.speedtest_ping
       - sensor.speedtest_download
       - sensor.speedtest_upload
-      - sensor.persiana_comedor_level_current_position
+      - input_boolean.enable_wifi_kids
+      - switch.wifi_kids
 
   Lights:
       name: Lights
@@ -93,10 +112,9 @@
       - switch.luces_jardin_switch_2
       - switch.luces_bano1_switch_2
       - switch.luces_bano1_switch_3
-      - input_number.slider_luces_pasillo
       - switch.luces_pasillo_switch_2
-      - input_number.slider_luces_hab2_techo
       - switch.luces_hab2_switch_2
+      - script.ps4_standby
 
   mqtt_sensors:
       name: mqtt sensors
@@ -136,5 +154,53 @@
       entities:
       - sensor.iphonem_battery_state
       - sensor.iphonem_battery_level
-      - sensor.iphonem
+      - device_tracker.iphonem
 
+  wallplugs:
+      name: Wall Plugs
+      entities:
+      - switch.wallplug1_switch
+      - sensor.wallplug1_energy
+      - sensor.wallplug1_power
+      - sensor.wallplug1_power_2
+      - switch.wallplug2_switch
+      - sensor.wallplug2_energy
+      - sensor.wallplug2_power
+      - sensor.wallplug2_power_2
+
+  Light_Global:
+      name: Global
+      entities:
+        - counter.auto_turn_off
+        - counter.auto_turn_off_wrong
+        - switch.test
+        - input_number.slider_test
+
+  Light_Pasillo:
+      control: hidden
+      name: Pasillo
+      entities:
+        - switch.luces_pasillo_switch_2
+        - input_boolean.enable_auto_light_pasillo
+        - input_number.slider_luces_pasillo
+        - counter.auto_turn_off_luces_pasillo_switch_2
+        - counter.auto_turn_off_wrong_luces_pasillo_switch_2
+
+  Light_Hab2:
+      control: hidden
+      name: Habitación 2
+      entities:
+        - switch.luces_hab2_switch_2
+        - input_boolean.enable_auto_light_hab2_techo
+        - input_number.slider_luces_hab2_techo
+        - counter.auto_turn_off_luces_hab2_switch_2
+        - counter.auto_turn_off_wrong_luces_hab2_switch_2
+
+  SprinklerControl:
+      control: hidden
+      name: Control
+      entities:
+        - input_boolean.enable_sprinkler_auto
+        - switch.sprinkler1_switch
+        - switch.sprinkler1_switch_2
+        - script.stress_sprinkler

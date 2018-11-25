@@ -1,3 +1,4 @@
+
 switch.luces_jardin_switch:
   friendly_name: 'Luces jardin lateral'
 switch.luces_jardin_switch_2:
@@ -20,9 +21,33 @@ switch.luces_pasillo_switch_3:
 switch.luces_hab2_switch_2:
   friendly_name: 'Luces Claudio techo'
 
+switch.wallplug1_switch:
+  friendly_name: 'TV'
+
+switch.wallplug2_switch:
+  friendly_name: 'NAS'
+
+switch.wifi_kids:
+  assumed_state: false
+
+switch.test:
+  assumed_state: false
+
 sensor.log_db_file_size:
   friendly_name: Home Assistant Log Db
   icon: mdi:database
 
 sensor.average_load_15m:
   unit_of_measurement: 'ld'
+
+switch.sprinkler1_switch:
+  friendly_name: 'Buganvillas'
+switch.sprinkler1_switch_2:
+  friendly_name: 'Cetos'
+
+sensor.qubino_zmnhnd1_flush_1d_relay_temperature:
+  friendly_name: 'Temperatura salón'
+  unit_of_measurement: '°C'
+  value_template: "{{ float(value) }}"
+switch.qubino_zmnhnd1_flush_1d_relay_switch_2:
+  friendly_name: 'Suelo radiante'
