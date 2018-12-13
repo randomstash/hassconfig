@@ -80,7 +80,6 @@
       - sensor.yw_td_temperature_min
       - sensor.yw_td_temperature_max
       - sensor.qubino_zmnhnd1_flush_1d_relay_temperature
-      - sensor.qubino_zmnhnd1_flush_1d_relay_temperature_2
       - switch.qubino_zmnhnd1_flush_1d_relay_switch_2
       - climate.suelo_radiante
 

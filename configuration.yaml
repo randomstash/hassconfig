@@ -186,6 +186,18 @@ sensor:
          unit_of_measurement: "degrees"
          value_template: "{{ '%+.1f' | format(states.sun.sun.attributes.elevation) }}"
 
+      climate_temp:
+        friendly_name: "Suelo Radiante Temperature"
+        unit_of_measurement: '°C'
+        value_template: "{{ states.climate.suelo_radiante.attributes.current_temperature }}"
+
+  - platform: history_stats
+    name: heating_today
+    entity_id: climate.suelo_radiante
+    state: 'heat'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
 
 input_number:
   slider_luces_pasillo:
@@ -212,6 +224,10 @@ input_boolean:
     name: Enable auto-wifi kids
     initial: on
     icon: mdi:wifi
+  enable_sprinkler_auto:
+    name: Enable auto-sprinkler
+    initial: on
+    icon: mdi:spa-outlinne
 
 # TODO!!
 # switch:
