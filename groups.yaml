@@ -82,6 +82,7 @@
       - sensor.qubino_zmnhnd1_flush_1d_relay_temperature
       - switch.qubino_zmnhnd1_flush_1d_relay_switch_2
       - climate.suelo_radiante
+      - sensor.heating_today
 
   Yahoo_tm:
       name: Forecast 24h
@@ -162,6 +163,7 @@
       - sensor.wallplug1_energy
       - sensor.wallplug1_power
       - sensor.wallplug1_power_2
+      - sensor.tv_on_today
       - switch.wallplug2_switch
       - sensor.wallplug2_energy
       - sensor.wallplug2_power
