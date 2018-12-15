@@ -60,7 +60,7 @@ mqtt:
 
 recorder:
   purge_interval: 2
-  purge_keep_days: 5
+  purge_keep_days: 14
   db_url: sqlite:////home/homeassistant/.homeassistant/home-assistant_v2.db
   exclude:
     domains:
@@ -70,6 +70,16 @@ recorder:
     entities:
       - sun.sun
       - sensor.luces_jardin_exporting
+      - zwave.wallplug2
+      - sensor.wallplug2_energy
+      - sensor.wallplug2_exporting
+      - sensor.wallplug2_power_2
+      - sensor.wallplug2_alarm_type
+      - sensor.wallplug2_alarm_level
+      - sensor.wallplug2_power
+      - sensor.wallplug2_power_management
+      - sensor.wallplug2_sourcenodeid
+      - switch.wallplug2_switch      
 
 # View all events in a logbook
 logbook:
@@ -81,6 +91,16 @@ logbook:
     entities:
       - sun.sun
       - sensor.luces_jardin_exporting
+      - zwave.wallplug2
+      - sensor.wallplug2_energy
+      - sensor.wallplug2_exporting
+      - sensor.wallplug2_power_2
+      - sensor.wallplug2_alarm_type
+      - sensor.wallplug2_alarm_level
+      - sensor.wallplug2_power
+      - sensor.wallplug2_power_management
+      - sensor.wallplug2_sourcenodeid
+      - switch.wallplug2_switch      
 
 # Enables support for tracking state changes over time
 history:
@@ -92,6 +112,16 @@ history:
     entities:
       - sun.sun
       - sensor.luces_jardin_exporting
+      - zwave.wallplug2
+      - sensor.wallplug2_energy
+      - sensor.wallplug2_exporting
+      - sensor.wallplug2_power_2
+      - sensor.wallplug2_alarm_type
+      - sensor.wallplug2_alarm_level
+      - sensor.wallplug2_power
+      - sensor.wallplug2_power_management
+      - sensor.wallplug2_sourcenodeid
+      - switch.wallplug2_switch      
 
 
 sensor:
@@ -186,6 +216,33 @@ sensor:
          unit_of_measurement: "degrees"
          value_template: "{{ '%+.1f' | format(states.sun.sun.attributes.elevation) }}"
 
+      climate_temp:
+        friendly_name: "Suelo Radiante Temperature"
+        unit_of_measurement: '°C'
+        value_template: "{{ states.climate.suelo_radiante.attributes.current_temperature }}"
+
+  - platform: history_stats
+    name: heating_on_today
+    entity_id: climate.suelo_radiante
+    state: 'heat'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: tv_on_today
+    entity_id: binary_sensor.tv_on
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+binary_sensor:
+  - platform: ping
+    name: tv_on
+    host: 192.168.1.101
+    count: 2
+    scan_interval: 60
 
 input_number:
   slider_luces_pasillo:
@@ -212,6 +269,14 @@ input_boolean:
     name: Enable auto-wifi kids
     initial: on
     icon: mdi:wifi
+  enable_sprinkler_auto:
+    name: Enable auto-sprinkler
+    initial: on
+    icon: mdi:spa-outlinne
+  alarm_suelo_radiante:
+    name: Alarm suelo_radiante
+    initial: off
+    icon: mdi:car-brake-parking
 
 # TODO!!
 # switch:

@@ -22,10 +22,10 @@ switch.luces_hab2_switch_2:
   friendly_name: 'Luces Claudio techo'
 
 switch.wallplug1_switch:
-  friendly_name: 'TV'
+  friendly_name: 'Sprinkler'
 
 switch.wallplug2_switch:
-  friendly_name: 'NAS'
+  friendly_name: 'TV'
 
 switch.wifi_kids:
   assumed_state: false

@@ -1,12 +1,16 @@
 
-    # - id: heal_zwave_network
-    #   alias: Heal Z-Wave Network
-    #   initial_state: 'on'
-    #   trigger:
-    #     platform: time
-    #     at: '3:00:00'
-    #   action:
-    #     service: zwave.heal_network
+    - id: heal_zwave_network
+      alias: Heal Z-Wave Network
+      initial_state: 'on'
+      trigger:
+        platform: time
+        at: '3:00:00'
+      condition:
+        condition: time
+        weekday:
+          - fri
+      action:
+        service: zwave.heal_network
 
     - id: update_available_notification
       alias: "Update Available Notification"
@@ -485,7 +489,116 @@
         - service: switch.turn_off
           entity_id: switch.sprinkler1_switch_2
 
+    - id: suelo_radiante_temp_alert
+      alias: Alert on temperature
+      initial_state: True
+      trigger:
+        platform: numeric_state
+        entity_id: sensor.suelo_radiante_temperature
+        above: 23.0
+        below: 16.0
+      action:
+          - service: notify.ios_iphonem
+            data:
+              title: "Home Assistant"
+              message: "Temperature alert {{ states.climate.suelo_radiante.attributes.current_temperature }}"
 
+    - id: suelo_radiante_night_off
+      alias: Lower target temperature over night
+      initial_state: True
+      trigger:
+        platform: time
+        hours: 00
+        minutes: 00
+        seconds: 00 
+      action:
+          - service: climate.set_temperature
+            data_template:
+              entity_id: climate.suelo_radiante
+              temperature: '{{ states.climate.suelo_radiante.attributes.temperature - 2 }}'
+          - service: notify.ios_iphonem
+            data:
+              title: "Home Assistant"
+              message: "Setting target temperature to {{ states.climate.suelo_radiante.attributes.temperature - 2 }}"
+
+    - id: suelo_radiante_night_on
+      alias: Restore target temperature
+      initial_state: True
+      trigger:
+        platform: time
+        hours: 07
+        minutes: 00
+        seconds: 00 
+      action:
+          - service: climate.set_temperature
+            data_template:
+              entity_id: climate.suelo_radiante
+              temperature: '{{ states.climate.suelo_radiante.attributes.temperature + 2 }}'
+
+    - id: suelo_radiante_cleaning_off
+      alias: Deactivate heating
+      initial_state: True
+      trigger:
+        platform: time
+        hours: 09
+        minutes: 00
+        seconds: 00
+      condition:
+      - condition: time
+        weekday:
+          - tue
+          - fri
+      action:
+          - service: climate.set_temperature
+            data_template:
+              entity_id: climate.suelo_radiante
+              temperature: '{{ states.climate.suelo_radiante.attributes.temperature - 10 }}'
+
+    - id: suelo_radiante_cleaning_on
+      alias: Reactivate heating
+      initial_state: True
+      trigger:
+        platform: time
+        hours: 13
+        minutes: 00
+        seconds: 00
+      condition:
+      - condition: time
+        weekday:
+          - tue
+          - fri
+      action:
+          - service: climate.set_temperature
+            data_template:
+              entity_id: climate.suelo_radiante
+              temperature: '{{ states.climate.suelo_radiante.attributes.temperature + 10 }}'
+
+    - id: alert_missing_update_suelo_radiante
+      alias: Notify missing updates from suelo_radiante
+      trigger:
+        - platform: time
+          hours: '/1'
+          minutes: 00
+          seconds: 00
+      condition:
+        condition: and
+        conditions:
+        - condition: template
+          value_template: '{{ (as_timestamp(now()) - as_timestamp(states.climate.suelo_radiante.last_updated)) > 3600 }}'
+        - condition: state
+          entity_id: input_boolean.alarm_suelo_radiante
+          state: 'off'
+      action:
+        - service: homeassistant.turn_on
+          data: 
+            entity_id: input_boolean.alarm_suelo_radiante
+        - service: notify.ios_iphonem
+          data:
+            title: "Home Assistant"
+            message: "Temperature alert {{ states.climate.suelo_radiante.attributes.current_temperature }}"
+
+
+############################################################################################################################################
     #Dash Buttons
     - id: dashbutton01
       alias: "6c:56:97:f7:89:3f"
