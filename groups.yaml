@@ -83,6 +83,7 @@
       - switch.qubino_zmnhnd1_flush_1d_relay_switch_2
       - sensor.heating_on_today
       - climate.suelo_radiante
+      - sensor.heating_today
 
   Yahoo_tm:
       name: Forecast 24h
