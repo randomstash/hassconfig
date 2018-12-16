@@ -529,18 +529,9 @@
         hours: 07
         minutes: 00
         seconds: 00 
-<<<<<<< HEAD
       condition:
-        condition: or
-        conditions:
-          - condition: numeric_state
-            entity_id: states.climate.suelo_radiante.attributes.temperature
-            above: 10
-          - condition: numeric_state
-            entity_id: states.climate.suelo_radiante.attributes.temperature
-            below: 20.1        
-=======
->>>>>>> 2db79d66e42c7d60b9007edbf40a5c3f13d922e0
+        - condition: template
+          value_template: '{{ states.climate.suelo_radiante.attributes.temperature < "20.1" }}'
       action:
           - service: climate.set_temperature
             data_template:
@@ -584,7 +575,6 @@
             data_template:
               entity_id: climate.suelo_radiante
               temperature: '{{ states.climate.suelo_radiante.attributes.temperature + 10 }}'
-<<<<<<< HEAD
 
     - id: alert_missing_update_suelo_radiante
       alias: Notify missing updates from suelo_radiante
@@ -609,9 +599,6 @@
           data:
             title: "Home Assistant"
             message: "Temperature alert {{ states.climate.suelo_radiante.attributes.current_temperature }}"
-
-=======
->>>>>>> 2db79d66e42c7d60b9007edbf40a5c3f13d922e0
 
 ############################################################################################################################################
     #Dash Buttons
