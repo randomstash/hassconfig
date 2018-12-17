@@ -531,7 +531,7 @@
         seconds: 00 
       condition:
         - condition: template
-          value_template: '{{ states.climate.suelo_radiante.attributes.temperature < "20.1" }}'
+          value_template: '{{ states.climate.suelo_radiante.attributes.temperature < 20.1 }}'
       action:
           - service: climate.set_temperature
             data_template:
