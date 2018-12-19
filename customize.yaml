@@ -22,7 +22,7 @@ switch.luces_hab2_switch_2:
   friendly_name: 'Luces Claudio techo'
 
 switch.wallplug1_switch:
-  friendly_name: 'Sprinkler'
+  friendly_name: 'Lavadora'
 
 switch.wallplug2_switch:
   friendly_name: 'TV'

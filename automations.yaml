@@ -331,7 +331,6 @@
             - condition: numeric_state
               entity_id: sensor.luces_bano1_power
               below: 10
-
       action:
         - service: homeassistant.turn_on
           entity_id: switch.luces_bano1_switch_2
@@ -599,6 +598,24 @@
           data:
             title: "Home Assistant"
             message: "Temperature alert {{ states.climate.suelo_radiante.attributes.current_temperature }}"
+            
+    - id: alert_missing_external_camera
+      alias: Notify external camera link lost
+      trigger:
+        platform: state
+        entity_id: binary_sensor.external_camera_on
+        to: 'off'
+      action:
+      - service: persistent_notification.create
+        data:
+          title: "Home Assistant alert"
+          message: "External camer down"
+      - service: notify.matias
+        data:
+          message: Flood_Lavavajillas sensor has been moved
+          title: Flood_Lavavajillas sensor moved
+
+
 
 ############################################################################################################################################
     #Dash Buttons
