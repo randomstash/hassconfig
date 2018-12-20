@@ -597,7 +597,7 @@
         - service: notify.ios_iphonem
           data:
             title: "Home Assistant"
-            message: "Temperature alert {{ states.climate.suelo_radiante.attributes.current_temperature }}"
+            message: "Temperature hasn't changed in over an hour"
             
     - id: alert_missing_external_camera
       alias: Notify external camera link lost
