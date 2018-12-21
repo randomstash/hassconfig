@@ -609,11 +609,12 @@
       - service: persistent_notification.create
         data:
           title: "Home Assistant alert"
-          message: "External camer down"
+          message: "External camera link lost"
       - service: notify.matias
         data:
-          message: Flood_Lavavajillas sensor has been moved
-          title: Flood_Lavavajillas sensor moved
+          title: "Home Assistant alert"
+          message: "External camera link lost"
+          
 
 
 

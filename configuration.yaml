@@ -241,13 +241,13 @@ binary_sensor:
   - platform: ping
     name: tv_on
     host: 192.168.1.101
-    count: 2
+    count: 5
     scan_interval: 300
 
   - platform: ping
     name: external_camera_on
     host: 192.168.1.191
-    count: 3
+    count: 5
     scan_interval: 300
 
 input_number:
