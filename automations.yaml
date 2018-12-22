@@ -613,7 +613,7 @@
       - service: notify.matias
         data:
           title: "Home Assistant alert"
-          message: "External camera link lost"
+          message: "External camera link lost {{ now() }}
           
 
 
