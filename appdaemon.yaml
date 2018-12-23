@@ -1,0 +1,24 @@
+appdaemon:
+  threads: 10
+  app_dir: /home/homeassistant/.homeassistant/apps
+  # cert_path: <path/to/root/CA/cert>
+  # cert_verify: False
+  api_port: 5000
+  # api_key: !secret api_key
+  # api_ssl_certificate: <path/to/root/CA/cert>
+  # api_ssl_key: <path/to/root/CA/key>
+  plugins:
+    HASS:
+      type: hass
+      ha_url: !secret baseurl
+      # ha_key: !secret http_password
+      token: !secret token_appdaemon
+      #ssl_certificate: /etc/dehydrated/certs/usulfremen.com/fullchain.pem
+      #ssl_key: /etc/dehydrated/certs/usulfremen.com/privkey.pem
+      cert_verify: False
+log:
+  logfile: /home/homeassistant/.homeassistant/appdaemon.log
+  errorfile: /home/homeassistant/.homeassistant/appdaemon.log
+  logsize: 100000
+  log_generations: 3
+

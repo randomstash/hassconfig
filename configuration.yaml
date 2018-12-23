@@ -26,9 +26,6 @@ config:
 # Enables iOS component
 ios:
 
-# Discover some devices automatically
-discovery:
-
 # Track the sun
 sun:
 
@@ -36,17 +33,17 @@ sun:
 map:
 
 http:
-  api_password: !secret http_password
+  # api_password: !secret http_password
   # server_port: 443
   # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
   base_url: !secret baseurl
   ssl_certificate: !secret ssl_certificate_path
   ssl_key: !secret ssl_key_path
-  trusted_networks:
-    - 127.0.0.1
-    - ::1
-    - 192.168.0.0/24
-  ip_ban_enabled: True
+  # trusted_networks:
+  #   - 127.0.0.1
+  #   - ::1
+  #   - 192.168.1.0/24
+  ip_ban_enabled: False
   login_attempts_threshold: 5
 
 updater:
@@ -250,14 +247,24 @@ binary_sensor:
     count: 5
     scan_interval: 300
 
+
 input_number:
+  slider_luces_test:
+    name: Timer test
+    initial: 2
+    min: 1
+    max: 10
+    step: 1
+    unit_of_measurement: seconds
+    icon: mdi:timer
+
   slider_luces_pasillo:
     name: Timer pasillo
     initial: 10
     min: 1
     max: 60
     step: 5
-    unit_of_measurement: seconds
+    unit_of_measurement: minutes
     icon: mdi:timer
 
   slider_luces_hab2_techo:
@@ -266,11 +273,14 @@ input_number:
     min: 5
     max: 60
     step: 5
-    unit_of_measurement: seconds
+    unit_of_measurement: minutes
     icon: mdi:timer
 
 
 input_boolean:
+  testswitch:
+    name: Test Boolean
+    initial: off
   enable_wifi_kids:
     name: Enable auto-wifi kids
     initial: on
@@ -284,6 +294,17 @@ input_boolean:
     initial: off
     icon: mdi:car-brake-parking
 
+switch:
+ - platform: template
+   switches:
+     testswitch:
+       value_template: "{{ is_state('input_boolean.testswitch', 'on') }}"
+       turn_on:
+         service: input_boolean.turn_on
+         entity_id: input_boolean.testswitch
+       turn_off:
+         service: input_boolean.turn_off
+         entity_id: input_boolean.testswitch
 # TODO!!
 # switch:
 #   platform: command_line

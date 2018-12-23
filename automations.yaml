@@ -606,14 +606,14 @@
         entity_id: binary_sensor.external_camera_on
         to: 'off'
       action:
-      - service: persistent_notification.create
-        data:
-          title: "Home Assistant alert"
-          message: "External camera link lost"
-      - service: notify.matias
-        data:
-          title: "Home Assistant alert"
-          message: "External camera link lost {{ now() }}
+        - service: persistent_notification.create
+          data:
+            title: "Home Assistant alert"
+            message: "External camera link lost"
+        - service: notify.matias
+          data:
+            title: "Home Assistant alert"
+            message: "External camera link lost {{ now() }}"
           
 
 

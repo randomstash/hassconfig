@@ -175,8 +175,8 @@
       entities:
         - counter.auto_turn_off
         - counter.auto_turn_off_wrong
-        - switch.test
-        - input_number.slider_test
+        - switch.testswitch
+        - input_number.slider_luces_test
 
   Light_Pasillo:
       control: hidden
