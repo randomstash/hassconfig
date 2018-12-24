@@ -26,7 +26,7 @@ class AutoLight_Global(hass.Hass):
 		handle = self.listen_event(self.hass_stopped, event='plugin_stopped')
 
 		# Register callback to load counters on hass start
-		handle = self.listen_event(self.hass_started, event='plugin_started')
+		# handle = self.listen_event(self.hass_started, event='plugin_started')
 
 		# Register callback on app terminate
 		handle = self.listen_event(self.hourly_save, event='terminate')
@@ -62,8 +62,8 @@ class AutoLight_Global(hass.Hass):
 	def hass_stopped(self, event_name, data, kwargs):
 		self.save_counters('dummy arg')
 
-	def hass_started(self, event_name, data, kwargs):
-		self.load_counters()
+	# def hass_started(self, event_name, data, kwargs):
+	# 	self.load_counters()
 
 	def load_counters(self):
 		self.log("Loading persistent counters")

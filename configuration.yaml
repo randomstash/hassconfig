@@ -277,6 +277,32 @@ input_number:
     icon: mdi:timer
 
 
+counter:
+  auto_turn_off:
+    initial: 0
+    step: 1
+  auto_turn_off_test:
+      initial: 0
+      step: 1
+  auto_turn_off_wrong_luces_pasillo_switch_2:
+      initial: 0
+      step: 1
+  auto_turn_off_wrong:
+      initial: 0
+      step: 1
+  auto_turn_off_luces_hab2_switch_2:
+      initial: 0
+      step: 1
+  auto_turn_off_wrong_test:
+      initial: 0
+      step: 1
+  auto_turn_off_wrong_luces_hab2_switch_2:
+      initial: 0
+      step: 1
+  auto_turn_off_luces_pasillo_switch_2:
+      initial: 0
+      step: 1
+
 input_boolean:
   testswitch:
     name: Test Boolean

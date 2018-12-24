@@ -579,14 +579,14 @@
       alias: Notify missing updates from suelo_radiante
       trigger:
         - platform: time
-          hours: '/1'
+          hours: '/2'
           minutes: 00
           seconds: 00
       condition:
         condition: and
         conditions:
         - condition: template
-          value_template: '{{ (as_timestamp(now()) - as_timestamp(states.climate.suelo_radiante.last_updated)) > 3600 }}'
+          value_template: '{{ (as_timestamp(now()) - as_timestamp(states.climate.suelo_radiante.last_updated)) > 7200 }}'
         - condition: state
           entity_id: input_boolean.alarm_suelo_radiante
           state: 'off'
@@ -597,7 +597,7 @@
         - service: notify.ios_iphonem
           data:
             title: "Home Assistant"
-            message: "Temperature hasn't changed in over an hour"
+            message: "Temperature hasn't changed in over an hour {{ now() }}"
             
     - id: alert_missing_external_camera
       alias: Notify external camera link lost
@@ -615,8 +615,33 @@
             title: "Home Assistant alert"
             message: "External camera link lost {{ now() }}"
           
+    - id: test_autolight
+      alias: Activate switch.testswitch every hour
+      trigger:
+        - platform: time
+          hours: /1
+          minutes: 00
+          seconds: 00
+      action:
+        - service: switch.turn_on
+          data: 
+            entity_id: switch.testswitch
 
-
+    - id: alert_missing_update_autolight
+      alias: Notify missing updates from autolight
+      trigger:
+        - platform: time
+          hours: /1
+          minutes: 00
+          seconds: 00
+      condition:
+        - condition: template
+          value_template: '{{ (as_timestamp(now()) - as_timestamp(states.switch.testswitch.last_updated)) > 3600 }}'
+      action:
+        - service: notify.ios_iphonem
+          data:
+            title: "Home Assistant"
+            message: "AutoLight not working! {{ now() }}"
 
 ############################################################################################################################################
     #Dash Buttons

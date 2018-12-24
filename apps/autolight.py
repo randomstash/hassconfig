@@ -15,7 +15,7 @@ class AutoLight(hass.Hass):
 	variables_data = []
 
 	def initialize(self):
-		self.autolight_controller = self.get_app('auto_light_global')
+		self.autolight_controller = self.get_app('AutoLight_Global')
 		self.light_switch = self.args["light_switch"]
 		self.light_timer = self.args["light_timer"]
 		self.max_backoff = self.args["max_backoff"]
@@ -93,8 +93,9 @@ class AutoLight(hass.Hass):
 					self.autolight_controller.book_decision_result(self.variables_data, turned_on_interval, 2)
 
 			# Register turn off callback
-			if self.light_switch.split(".",1)[1] == 'test':
-				self.log("Scheduling auto-off for: %s" % int(float(self.get_state(self.light_timer))))
+			self.log("debug: %s" % self.light_switch.split(".",1)[1])
+			if self.light_switch.split(".",1)[1] == 'testswitch':
+				self.log("Scheduling test auto-off for: %s" % int(float(self.get_state(self.light_timer))))
 				self.callback_turn_off_handle = self.run_in(self.callback_turn_off, int(float(self.get_state(self.light_timer))))
 			else:
 				self.log("Scheduling auto-off for: %s" % int(float(self.get_state(self.light_timer))) * 60)
@@ -111,8 +112,20 @@ class AutoLight(hass.Hass):
 
 
 	def book_decision_data(self, entity):
-		variables = ["switch.luces_jardin_switch", "switch.luces_jardin_switch_2", "switch.persiana_comedor_switch", "switch.luces_bano1_switch_3", "switch.luces_bano1_switch_2", "switch.luces_bano1_switch", "switch.luces_hab2_switch_2", "switch.luces_hab2_switch", "switch.luces_hab2_switch_3", "switch.luces_pasillo_switch_2", "switch.luces_pasillo_switch_3", "switch.luces_pasillo_switch", "sensor.solar_angle","sensor.pir_bano_luminance"]
+		# variables = ["switch.luces_jardin_switch", "switch.luces_jardin_switch_2", "cover.persiana_comedor_level", "switch.luces_bano1_switch_3", "switch.luces_bano1_switch_2", "switch.luces_bano1_switch", "switch.luces_hab2_switch_2", "switch.luces_hab2_switch", "switch.luces_hab2_switch_3", "switch.luces_pasillo_switch_2", "switch.luces_pasillo_switch_3", "switch.luces_pasillo_switch", "sensor.solar_angle","sensor.pir_bano_luminance"]
+		variables = ["switch.luces_jardin_switch", "switch.luces_jardin_switch_2", "cover.persiana_comedor_level", "switch.luces_bano1_switch_3", "switch.luces_bano1_switch_2", "switch.luces_bano1_switch", "switch.luces_pasillo_switch_2", "switch.luces_pasillo_switch_3", "switch.luces_pasillo_switch", "sensor.solar_angle","sensor.pir_bano_luminance"]
 		self.log("book_decision_data")
+		self.log("DEBUG (luces_jardin_switch): %s" % self.get_state("switch.luces_jardin_switch"))
+		self.log("DEBUG (luces_jardin_switch_2): %s" % self.get_state("switch.luces_jardin_switch_2"))
+		self.log("DEBUG (persiana_comedor_switch): %s" % self.get_state("cover.persiana_comedor_level"))
+		self.log("DEBUG (luces_bano1_switch_3): %s" % self.get_state("switch.luces_bano1_switch_3"))
+		self.log("DEBUG (luces_bano1_switch_2): %s" % self.get_state("switch.luces_bano1_switch_2"))
+		self.log("DEBUG (luces_bano1_switch): %s" % self.get_state("switch.luces_bano1_switch"))
+		self.log("DEBUG (luces_pasillo_switch_2): %s" % self.get_state("switch.luces_pasillo_switch_2"))
+		self.log("DEBUG (luces_pasillo_switch_3): %s" % self.get_state("switch.luces_pasillo_switch_3"))
+		self.log("DEBUG (luces_pasillo_switch): %s" % self.get_state("switch.luces_pasillo_switch"))
+		self.log("DEBUG (solar_angle): %s" % self.get_state("sensor.solar_angle"))
+		self.log("DEBUG (pir_bano_luminance): %s" % self.get_state("sensor.pir_bano_luminance"))
 		self.variables_data.append(entity)
 		self.variables_data.append(self.datetime().weekday())
 		self.variables_data.append(self.datetime().hour)

@@ -2,31 +2,31 @@ hello_world:
   module: hello
   class: HelloWorld
 
-auto_light_global:
+AutoLight_Global:
   module: autolight_global
   class: AutoLight_Global
 
 auto_light_test:
   module: autolight
   class: AutoLight
-  dependencies: autolight_global
+  dependencies: AutoLight_Global
   light_switch: switch.testswitch
   light_timer: input_number.slider_luces_test
   max_backoff: 30
 
-# auto_light_pasillo:
-#   module: autolight
-#   class: AutoLight
-#   dependencies: autolight_global
-#   constrain_input_boolean: input_boolean.enable_auto_light_pasillo
-#   light_switch: switch.luces_pasillo_switch_2
-#   light_timer: input_number.slider_luces_pasillo
-#   max_backoff: 30
+auto_light_pasillo:
+  module: autolight
+  class: AutoLight
+  dependencies: AutoLight_Global
+  constrain_input_boolean: input_boolean.enable_auto_light_pasillo
+  light_switch: switch.luces_pasillo_switch_2
+  light_timer: input_number.slider_luces_pasillo
+  max_backoff: 30
 
 # auto_light_hab2_techo:
 #   module: autolight
 #   class: AutoLight
-#   dependencies: autolight_global
+#   dependencies: AutoLight_Global
 #   constrain_input_boolean: input_boolean.enable_auto_light_hab2_techo
 #   light_switch: switch.luces_hab2_switch_2
 #   light_timer: input_number.slider_luces_hab2_techo
