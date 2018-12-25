@@ -507,14 +507,15 @@
       initial_state: True
       trigger:
         platform: time
-        hours: 00
+        hours: 23
         minutes: 00
         seconds: 00 
       action:
           - service: climate.set_temperature
             data_template:
               entity_id: climate.suelo_radiante
-              temperature: '{{ states.climate.suelo_radiante.attributes.temperature - 2 }}'
+              temperature: '20'
+              # temperature: '{{ states.climate.suelo_radiante.attributes.temperature - 2 }}'
           - service: notify.ios_iphonem
             data:
               title: "Home Assistant"
@@ -525,17 +526,18 @@
       initial_state: True
       trigger:
         platform: time
-        hours: 07
+        hours: 06
         minutes: 00
         seconds: 00 
-      condition:
-        - condition: template
-          value_template: '{{ states.climate.suelo_radiante.attributes.temperature < 20.1 }}'
+      # condition:
+      #   - condition: template
+      #     value_template: '{{ states.climate.suelo_radiante.attributes.temperature < 20.1 }}'
       action:
           - service: climate.set_temperature
             data_template:
               entity_id: climate.suelo_radiante
-              temperature: '{{ states.climate.suelo_radiante.attributes.temperature + 2 }}'
+              temperature: '21.8'
+              # temperature: '{{ states.climate.suelo_radiante.attributes.temperature + 2 }}'
 
     - id: suelo_radiante_cleaning_off
       alias: Deactivate heating
