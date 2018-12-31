@@ -114,7 +114,7 @@
       - switch.luces_bano1_switch_2
       - switch.luces_bano1_switch_3
       - switch.luces_pasillo_switch_2
-      - switch.luces_hab2_switch_2
+      - switch.luces_hab2_techo
       - script.ps4_standby
 
   mqtt_sensors:
@@ -192,11 +192,11 @@
       control: hidden
       name: Habitación 2
       entities:
-        - switch.luces_hab2_switch_2
+        - switch.luces_hab2_techo
         - input_boolean.enable_auto_light_hab2_techo
         - input_number.slider_luces_hab2_techo
-        - counter.auto_turn_off_luces_hab2_switch_2
-        - counter.auto_turn_off_wrong_luces_hab2_switch_2
+        - counter.auto_turn_off_luces_hab2_techo
+        - counter.auto_turn_off_wrong_luces_hab2_techo
 
   SprinklerControl:
       control: hidden
