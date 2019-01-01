@@ -129,7 +129,7 @@ class AutoLight(hass.Hass):
 		self.variables_data.append(entity)
 		self.variables_data.append(self.datetime().weekday())
 		self.variables_data.append(self.datetime().hour)
-		self.variables_data.append(','.join(list(map(lambda x: self.get_state(x), variables))))
+		self.variables_data.append(','.join(list(map(lambda x: str(self.get_state(x)), variables))))
 		self.log("book_decision_data done: %s" % self.variables_data)
 
 	def callback_turn_off(self, kwargs):

@@ -181,27 +181,27 @@ sensor:
       flood_bano1_battery_level:
           friendly_name: "Flood_bano1 (battery)"
           unit_of_measurement: "%"
-          value_template: "{{ states.zwave.flood_bano1.attributes.battery_level }}"
+          value_template: "{{ states('zwave.flood_bano1.attributes.battery_level') }}"
 
       flood_cocina_battery_level:
           friendly_name: "Flood_cocina (battery)"
           unit_of_measurement: "%"
-          value_template: "{{ states.zwave.flood_cocina.attributes.battery_level }}"
+          value_template: "{{ states('zwave.flood_cocina.attributes.battery_level') }}"
 
       flood_lavadora_battery_level:
           friendly_name: "Flood_lavadora (battery)"
           unit_of_measurement: "%"
-          value_template: "{{ states.zwave.flood_lavadora.attributes.battery_level }}"
+          value_template: "{{ states('zwave.flood_lavadora.attributes.battery_level') }}"
 
       flood_lavavajillas_battery_level:
           friendly_name: "Flood_lavavajillas (battery)"
           unit_of_measurement: "%"
-          value_template: "{{ states.zwave.flood_lavavajillas.attributes.battery_level }}"
+          value_template: "{{ states('zwave.flood_lavavajillas.attributes.battery_level') }}"
 
       pir_bano_battery_level:
           friendly_name: "Pir_Baño (battery)"
           unit_of_measurement: "%"
-          value_template: "{{ states.zwave.pir_bano.attributes.battery_level }}"
+          value_template: "{{ states('zwave.pir_bano.attributes.battery_level') }}"
 
       persiana_comedor_level_current_position:
          friendly_name: "Persiana Comedor (pos)"
@@ -216,7 +216,7 @@ sensor:
       climate_temp:
         friendly_name: "Suelo Radiante Temperature"
         unit_of_measurement: '°C'
-        value_template: "{{ states.climate.suelo_radiante.attributes.current_temperature }}"
+        value_template: "{{ states('climate.suelo_radiante.attributes.current_temperature') }}"
 
   - platform: history_stats
     name: heating_on_today
@@ -331,16 +331,15 @@ switch:
        turn_off:
          service: input_boolean.turn_off
          entity_id: input_boolean.testswitch
-# TODO!!
-# switch:
-#   platform: command_line
-#   switches:
-#     wifi_kids:
-#       command_on: "/usr/bin/curl -X GET http://192.168.1.10/digital/4/1"
-#       command_off: "/usr/bin/curl -X GET http://192.168.1.10/digital/4/0"
-#       command_state: "/usr/bin/curl -X GET http://192.168.1.10/digital/4"
-#       value_template: '{{ value == "1" }}'
-#       friendly_name: Kitchen Lightswitch
+
+ # - platform: command_line
+ #   switches:
+ #     wifi_kids:
+ #       command_on: "/srv/homeassistant/bin/python /home/homeassistant/.homeassistant/blockMAC.py block"
+ #       command_off: "/srv/homeassistant/bin/python /home/homeassistant/.homeassistant/blockMAC.py unblock"
+ #       command_state: "/srv/homeassistant/bin/python /home/homeassistant/.homeassistant/blockMAC.py check"
+ #       value_template: '{{ value == "1" }}'
+ #       friendly_name: Kid's wifi status
 
 history_graph: 
   temperature:
