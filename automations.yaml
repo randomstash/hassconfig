@@ -378,6 +378,9 @@
           - condition: state
             entity_id: input_boolean.enable_wifi_kids
             state: "on"
+          - condition: state
+            entity_id: binary_sensor.workday_today
+            state: "on"
           - condition: time
             weekday:
               - mon

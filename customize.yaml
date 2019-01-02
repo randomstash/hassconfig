@@ -51,3 +51,12 @@ sensor.qubino_zmnhnd1_flush_1d_relay_temperature:
   value_template: "{{ float(value) }}"
 switch.qubino_zmnhnd1_flush_1d_relay_switch_2:
   friendly_name: 'Suelo radiante'
+
+binary_sensor.workday_today:
+  friendly_name: Workday today
+  icon: mdi:briefcase-outline
+
+binary_sensor.workday_tomorrow:
+  friendly_name: Workday tomorrow
+  icon: mdi:briefcase-outline
+  rgb_color: [251, 210, 41]

@@ -17,6 +17,15 @@ zwave:
   usb_path: /dev/ttyACM0
   config_path: /etc/openzwave/
 
+logger:
+  default: warning
+  # logs:
+  #   homeassistant.components.http.view: warning
+  #   homeassistant.components.switch.command_line: warning
+  #   homeassistant.components.zwave: warning
+
+
+
 # Enables the frontend
 frontend:
 
@@ -206,7 +215,7 @@ sensor:
       persiana_comedor_level_current_position:
          friendly_name: "Persiana Comedor (pos)"
          unit_of_measurement: "%"
-         value_template: "{{ 100 - states.cover.persiana_comedor_level.attributes.current_position }}"
+         value_template: "{{ 100 - states('cover.persiana_comedor_level.attributes.current_position') | int }}"
 
       solar_angle:
          friendly_name: "Sun Angle"
@@ -246,6 +255,18 @@ binary_sensor:
     host: 192.168.1.191
     count: 5
     scan_interval: 300
+
+  - platform: workday
+    name: "workday_today"
+    days_offset: 0
+    country: "ES"
+    province: "CAT"
+
+  - platform: workday
+    name: "workday_tomorrow"
+    days_offset: 1
+    country: "ES"
+    province: "CAT"
 
 
 input_number:
@@ -332,14 +353,14 @@ switch:
          service: input_boolean.turn_off
          entity_id: input_boolean.testswitch
 
- # - platform: command_line
- #   switches:
- #     wifi_kids:
- #       command_on: "/srv/homeassistant/bin/python /home/homeassistant/.homeassistant/blockMAC.py block"
- #       command_off: "/srv/homeassistant/bin/python /home/homeassistant/.homeassistant/blockMAC.py unblock"
- #       command_state: "/srv/homeassistant/bin/python /home/homeassistant/.homeassistant/blockMAC.py check"
- #       value_template: '{{ value == "1" }}'
- #       friendly_name: Kid's wifi status
+ - platform: command_line
+   switches:
+     wifi_kids:
+       command_on: "/srv/homeassistant/bin/python /home/homeassistant/.homeassistant/blockMAC.py block"
+       command_off: "/srv/homeassistant/bin/python /home/homeassistant/.homeassistant/blockMAC.py unblock"
+       command_state: "/srv/homeassistant/bin/python /home/homeassistant/.homeassistant/blockMAC.py check"
+       # value_template: '{{ value == "1" }}'
+       friendly_name: Kid's wifi status
 
 history_graph: 
   temperature:

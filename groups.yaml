@@ -95,6 +95,8 @@
       name: Status
       control: hidden
       entities:
+      - binary_sensor.workday_today
+      - binary_sensor.workday_tomorrow
       - sensor.average_load_15m
       - sensor.ram_available
       - sensor.disk_use_percent
