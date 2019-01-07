@@ -5,6 +5,7 @@
       - group.Status
       - group.Yahoo_td
       - group.Yahoo_tm
+      - group.Thermostat
       - group.Lights
       - group.mqtt_sensors
       #- group.actuators
@@ -79,8 +80,12 @@
       - sensor.solar_angle
       - sensor.yw_td_temperature_min
       - sensor.yw_td_temperature_max
+
+  Thermostat:   
+    name: Thermostat Control
+    entities:
       - sensor.qubino_zmnhnd1_flush_1d_relay_temperature
-      - switch.qubino_zmnhnd1_flush_1d_relay_switch_2
+      - switch.qubino_zmnhnd1_flush_1d_relay_switch_2      
       - sensor.heating_on_today
       - climate.suelo_radiante
       - sensor.heating_today

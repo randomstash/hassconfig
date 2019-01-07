@@ -331,7 +331,7 @@ input_boolean:
   enable_wifi_kids:
     name: Enable auto-wifi kids
     initial: on
-    icon: mdi:wifi
+    icon: mdi:wifi  
   enable_sprinkler_auto:
     name: Enable auto-sprinkler
     initial: on
