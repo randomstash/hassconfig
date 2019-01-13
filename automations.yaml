@@ -630,6 +630,11 @@
           minutes: 00
           seconds: 00
       action:
+        - service: switch.turn_off
+          data: 
+            entity_id: switch.testswitch
+        - delay:
+            seconds: "2"            
         - service: switch.turn_on
           data: 
             entity_id: switch.testswitch
