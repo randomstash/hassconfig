@@ -529,7 +529,7 @@
       initial_state: True
       trigger:
         platform: time
-        hours: 06
+        hours: 04
         minutes: 00
         seconds: 00 
       # condition:
@@ -539,7 +539,7 @@
           - service: climate.set_temperature
             data_template:
               entity_id: climate.suelo_radiante
-              temperature: '21.8'
+              temperature: '22.0'
               # temperature: '{{ states.climate.suelo_radiante.attributes.temperature + 2 }}'
 
     - id: suelo_radiante_cleaning_off

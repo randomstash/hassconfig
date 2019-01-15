@@ -356,8 +356,8 @@ switch:
  - platform: command_line
    switches:
      wifi_kids:
-       command_on: "/srv/homeassistant/bin/python /home/homeassistant/.homeassistant/blockMAC.py block"
-       command_off: "/srv/homeassistant/bin/python /home/homeassistant/.homeassistant/blockMAC.py unblock"
+       command_on: "/srv/homeassistant/bin/python /home/homeassistant/.homeassistant/blockMAC.py unblock"
+       command_off: "/srv/homeassistant/bin/python /home/homeassistant/.homeassistant/blockMAC.py block"
        command_state: "/srv/homeassistant/bin/python /home/homeassistant/.homeassistant/blockMAC.py check"
        # value_template: '{{ value == "1" }}'
        friendly_name: Kid's wifi status
