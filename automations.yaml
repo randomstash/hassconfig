@@ -497,8 +497,7 @@
       trigger:
         platform: numeric_state
         entity_id: sensor.suelo_radiante_temperature
-        above: 22.5
-        below: 16.0
+        above: "23"
       action:
           - service: notify.ios_iphonem
             data:
@@ -556,19 +555,20 @@
           - tue
           - fri
       action:
-          - service: climate.set_temperature
-            data_template:
-              entity_id: climate.suelo_radiante
-              # temperature: '{{ states.climate.suelo_radiante.attributes.temperature - 10 }}'
-              temperature: '10'
+        - service: climate.turn_off
+          entity_id: climate.suelo_radiante
+          # - service: climate.set_temperature
+          #   data_template:
+          #     entity_id: climate.suelo_radiante
+          #     temperature: '10'
 
     - id: suelo_radiante_cleaning_on
       alias: Reactivate heating
       initial_state: True
       trigger:
         platform: time
-        hours: 13
-        minutes: 00
+        hours: 14
+        minutes: 30
         seconds: 00
       condition:
       - condition: time
@@ -576,11 +576,12 @@
           - tue
           - fri
       action:
-          - service: climate.set_temperature
-            data_template:
-              entity_id: climate.suelo_radiante
-              # temperature: '{{ states.climate.suelo_radiante.attributes.temperature + 10 }}'
-              temperature: '22'
+        - service: climate.turn_on
+          entity_id: climate.suelo_radiante        
+          # - service: climate.set_temperature
+          #   data_template:
+          #     entity_id: climate.suelo_radiante
+          #     temperature: '22'
 
     - id: alert_missing_update_suelo_radiante
       alias: Notify missing updates from suelo_radiante
