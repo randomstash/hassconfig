@@ -516,7 +516,7 @@
           - service: climate.set_temperature
             data_template:
               entity_id: climate.suelo_radiante
-              temperature: '22'
+              temperature: '21'
               # temperature: '{{ states.climate.suelo_radiante.attributes.temperature - 2 }}'
           - service: notify.ios_iphonem
             data:
@@ -528,7 +528,7 @@
       initial_state: True
       trigger:
         platform: time
-        hours: 04
+        hours: 05
         minutes: 00
         seconds: 00 
       # condition:
