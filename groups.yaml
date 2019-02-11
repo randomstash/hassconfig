@@ -106,6 +106,7 @@
       - sensor.ram_available
       - sensor.disk_use_percent
       - sensor.log_db_file_size
+      - sensor.influx_db_file_size
       - sensor.speedtest_ping
       - sensor.speedtest_download
       - sensor.speedtest_upload

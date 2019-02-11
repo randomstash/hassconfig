@@ -185,6 +185,13 @@ sensor:
     unit_of_measurement: 'MB'
     value_template: '{{ value | int - 1 }}'
 
+  - platform: command_line
+    name: "influx_db_file_size"
+    command: "du -ms /var/lib/influxdb | cut -f1"
+    scan_interval: 3600
+    unit_of_measurement: 'MB'
+    value_template: '{{ value | int - 1 }}'
+
   - platform: template
     sensors:
       flood_bano1_battery_level:
