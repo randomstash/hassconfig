@@ -379,15 +379,8 @@
             entity_id: input_boolean.enable_wifi_kids
             state: "on"
           - condition: state
-            entity_id: binary_sensor.workday_today
+            entity_id: binary_sensor.workday_tomorrow
             state: "on"
-          - condition: time
-            weekday:
-              - mon
-              - tue
-              - wed
-              - thu
-              - sun
       action:
         - service: switch.turn_off
           entity_id: switch.wifi_kids
@@ -417,6 +410,8 @@
               - wed
               - thu
               - fri
+              - sat
+              - sun
       action:
         - service: switch.turn_on
           entity_id: switch.wifi_kids
