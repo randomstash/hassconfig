@@ -23,11 +23,11 @@ auto_light_pasillo:
   light_timer: input_number.slider_luces_pasillo
   max_backoff: 30
 
-# auto_light_hab2_techo:
-#   module: autolight
-#   class: AutoLight
-#   dependencies: AutoLight_Global
-#   constrain_input_boolean: input_boolean.enable_auto_light_hab2_techo
-#   light_switch: switch.luces_hab2_switch_2
-#   light_timer: input_number.slider_luces_hab2_techo
-#   max_backoff: 60
+auto_light_hab2_techo:
+  module: autolight
+  class: AutoLight
+  dependencies: AutoLight_Global
+  constrain_input_boolean: input_boolean.enable_auto_light_hab2_techo
+  light_switch: switch.luces_hab2_switch_2
+  light_timer: input_number.slider_luces_hab2_techo
+  max_backoff: 60
