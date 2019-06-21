@@ -37,7 +37,7 @@ sensor.log_db_file_size:
   friendly_name: Home Assistant Log Db
   icon: mdi:database
 
-sensor.average_load_15m:
+sensor.load_15m:
   unit_of_measurement: 'ld'
 
 switch.sprinkler1_switch:
@@ -51,6 +51,8 @@ sensor.qubino_zmnhnd1_flush_1d_relay_temperature:
   value_template: "{{ float(value) }}"
 switch.qubino_zmnhnd1_flush_1d_relay_switch_2:
   friendly_name: 'Suelo radiante'
+cover.qubino_zmnhcdx_flush_shutter_level:
+  friendly_name: 'Persiana comedor'
 
 binary_sensor.workday_today:
   friendly_name: Workday today

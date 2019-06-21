@@ -1,4 +1,3 @@
-
     - id: heal_zwave_network
       alias: Heal Z-Wave Network
       initial_state: 'on'
@@ -172,9 +171,9 @@
       alias: Request updates from iphonem every hour
       initial_state: True
       trigger:
-        platform: time
+        platform: time_pattern
         minutes: 0
-        seconds: 00
+        seconds: 0
       condition:
         condition: numeric_state
         entity_id: sensor.iphonem_battery_level
@@ -227,10 +226,10 @@
       alias: Turn off external lights we forgot about at night
       initial_state: True
       trigger:
-        platform: time
-        hours: 00
-        minutes: 00
-        seconds: 00
+        platform: time_pattern
+        hours: 0
+        minutes: 0
+        seconds: 0
       condition:
         condition: and
         conditions:
@@ -368,10 +367,10 @@
       initial_state: True
       alias: Turn off wifi for kids
       trigger:
-        platform: time
+        platform: time_pattern
         hours: 20
-        minutes: 00
-        seconds: 00
+        minutes: 0
+        seconds: 0
       condition:
         condition: and
         conditions:
@@ -393,10 +392,10 @@
       initial_state: True
       alias: Turn on wifi for kids
       trigger:
-        platform: time
+        platform: time_pattern
         hours: 10
-        minutes: 00
-        seconds: 00
+        minutes: 0
+        seconds: 0
       condition:
         condition: and
         conditions:
@@ -477,7 +476,7 @@
       action:
         - service: switch.turn_on
           entity_id: switch.sprinkler1_switch
-        - delay: '00:01:00'
+        - delay: '00:05:00'
         - service: switch.turn_off
           entity_id: switch.sprinkler1_switch
         - service: switch.turn_on
@@ -503,10 +502,10 @@
       alias: Lower target temperature over night
       initial_state: True
       trigger:
-        platform: time
+        platform: time_pattern
         hours: 23
-        minutes: 00
-        seconds: 00 
+        minutes: 0
+        seconds: 0
       action:
           - service: climate.set_temperature
             data_template:
@@ -522,10 +521,10 @@
       alias: Restore target temperature
       initial_state: True
       trigger:
-        platform: time
+        platform: time_pattern
         hours: 05
-        minutes: 00
-        seconds: 00 
+        minutes: 0
+        seconds: 0
       # condition:
       #   - condition: template
       #     value_template: '{{ states.climate.suelo_radiante.attributes.temperature < 20.1 }}'
@@ -540,10 +539,10 @@
       alias: Deactivate heating
       initial_state: True
       trigger:
-        platform: time
+        platform: time_pattern
         hours: 09
-        minutes: 00
-        seconds: 00
+        minutes: 0
+        seconds: 0
       condition:
       - condition: time
         weekday:
@@ -561,10 +560,10 @@
       alias: Reactivate heating
       initial_state: True
       trigger:
-        platform: time
+        platform: time_pattern
         hours: 14
         minutes: 30
-        seconds: 00
+        seconds: 0
       condition:
       - condition: time
         weekday:
@@ -581,10 +580,10 @@
     - id: alert_missing_update_suelo_radiante
       alias: Notify missing updates from suelo_radiante
       trigger:
-        - platform: time
-          hours: '/2'
-          minutes: 00
-          seconds: 00
+        platform: time_pattern
+        hours: '/2'
+        minutes: 0
+        seconds: 0
       condition:
         condition: and
         conditions:
@@ -621,10 +620,10 @@
     - id: test_autolight
       alias: Activate switch.testswitch every hour
       trigger:
-        - platform: time
-          hours: /1
-          minutes: 00
-          seconds: 00
+        platform: time_pattern
+        hours: '/1'
+        minutes: 0
+        seconds: 0
       action:
         - service: switch.turn_off
           data: 
@@ -638,10 +637,10 @@
     - id: alert_missing_update_autolight
       alias: Notify missing updates from autolight
       trigger:
-        - platform: time
-          hours: /1
-          minutes: 00
-          seconds: 00
+        platform: time_pattern
+        hours: /1
+        minutes: 0
+        seconds: 0
       condition:
         - condition: template
           value_template: '{{ (as_timestamp(now()) - as_timestamp(states.switch.testswitch.last_updated)) > 3600 }}'

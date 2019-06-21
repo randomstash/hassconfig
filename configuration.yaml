@@ -59,10 +59,10 @@ updater:
   # Optional, allows Home Assistant developers to focus on popular components.
   include_used_components: true
 
-mqtt:
-  broker: 127.0.0.1
-#   username: homeassistant
-#   password: homeassistant
+# mqtt:
+#   broker: 127.0.0.1
+# #   username: homeassistant
+# #   password: homeassistant
 
 recorder:
   purge_interval: 2
@@ -131,22 +131,22 @@ history:
 
 
 sensor:
-  - platform: yweather
-    name: yw_td
-    woeid: 20078604
+  - platform: darksky
+    api_key: c4eb364f61d932dedda464def0d44143
+    forecast:
+      - 0
+      - 1
     monitored_conditions:
-      - temp_min
-      - temp_max
-      - weather_current
-
-  - platform: yweather
-    name: yw_tm
-    woeid: 20078604
-    forecast: 1
-    monitored_conditions:
-      - weather
-      - temp_min
-      - temp_max
+      - summary
+      - icon
+      - temperature
+      - precip_probability
+    scan_interval:
+      days: 0
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
 
   - platform: systemmonitor
     resources:
@@ -168,15 +168,15 @@ sensor:
       - download
       - upload
 
-  - platform: mqtt
-    name: "mqtt_wipy1_heartbeat"
-    state_topic: "hass/wipy1/heartbeat"
+  # - platform: mqtt
+  #   name: "mqtt_wipy1_heartbeat"
+  #   state_topic: "hass/wipy1/heartbeat"
 
-  - platform: mqtt
-    name: "mqtt_wipy1_battery"
-    state_topic: "hass/wipy1/battery"
-    value_template: "{{ value[value|length-6:] }}"
-    unit_of_measurement: "Volts"
+  # - platform: mqtt
+  #   name: "mqtt_wipy1_battery"
+  #   state_topic: "hass/wipy1/battery"
+  #   value_template: "{{ value[value|length-6:] }}"
+  #   unit_of_measurement: "Volts"
 
   - platform: command_line
     name: "log_db_file_size"
