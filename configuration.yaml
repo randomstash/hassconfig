@@ -25,6 +25,7 @@ logger:
   #   homeassistant.components.zwave: warning
 
 
+system_health:
 
 # Enables the frontend
 frontend:
@@ -155,18 +156,18 @@ sensor:
       - type: memory_free
       - type: load_15m
 
-  - platform: speedtest
-    server_id: 4374
-    minute: 30
-    hour:
-      - 0
-      - 6
-      - 12
-      - 18
-    monitored_conditions:
-      - ping
-      - download
-      - upload
+  # - platform: speedtest
+  #   server_id: 4374
+  #   minute: 30
+  #   hour:
+  #     - 0
+  #     - 6
+  #     - 12
+  #     - 18
+  #   monitored_conditions:
+  #     - ping
+  #     - download
+  #     - upload
 
   # - platform: mqtt
   #   name: "mqtt_wipy1_heartbeat"
@@ -400,11 +401,11 @@ climate:
     # away_temp: 16
 
 
-influxdb:
-  host: 127.0.0.1
-  # database_connection_pool_size: 20
-  username: !secret influxdb_user
-  password: !secret influxdb_pass
+# influxdb:
+#   host: 127.0.0.1
+#   # database_connection_pool_size: 20
+#   username: !secret influxdb_user
+#   password: !secret influxdb_pass
 
 notify:
   - name: !secret user1

@@ -40,9 +40,9 @@ sensor.log_db_file_size:
 sensor.load_15m:
   unit_of_measurement: 'ld'
 
-switch.sprinkler1_switch:
+switch.fibaro_system_fgs222_double_relay_switch_2x15kw_switch:
   friendly_name: 'Buganvillas'
-switch.sprinkler1_switch_2:
+switch.fibaro_system_fgs222_double_relay_switch_2x15kw_switch_2:
   friendly_name: 'Cetos'
 
 sensor.qubino_zmnhnd1_flush_1d_relay_temperature:
