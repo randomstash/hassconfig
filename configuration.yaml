@@ -385,7 +385,7 @@ history_graph:
 climate:
   - platform: generic_thermostat
     name: Suelo Radiante
-    heater: switch.qubino_zmnhnd1_flush_1d_relay_switch_2
+    heater: switch.qubino_zmnhnd1_flush_1d_relay_switch
     target_sensor: sensor.qubino_zmnhnd1_flush_1d_relay_temperature
     min_temp: 15
     max_temp: 23
