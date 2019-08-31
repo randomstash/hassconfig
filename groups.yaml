@@ -183,7 +183,7 @@
       control: hidden
       name: Pasillo
       entities:
-        - switch.luces_pasillo_switch_2
+        - switch.qubino_zmnhbdx_flush_2_relays_switch
         - input_boolean.enable_auto_light_pasillo
         - input_number.slider_luces_pasillo
         - counter.auto_turn_off_luces_pasillo_switch_2

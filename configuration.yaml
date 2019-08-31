@@ -344,6 +344,10 @@ input_boolean:
     name: Enable auto-sprinkler
     initial: on
     icon: mdi:spa-outlinne
+  enable_auto_light_pasillo:
+    name: Enable auto-light pasillo
+    initial: on
+    icon: mdi:spa-outlinne
   alarm_suelo_radiante:
     name: Alarm suelo_radiante
     initial: off
