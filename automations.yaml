@@ -214,9 +214,9 @@
                   above: 10
       action:
         - service: homeassistant.turn_off
-          entity_id: switch.luces_jardin_switch
+          entity_id: switch.fibaro_system_fgs223_double_relay_switch
         - service: homeassistant.turn_off
-          entity_id: switch.luces_jardin_switch_2
+          entity_id: switch.fibaro_system_fgs223_double_relay_switch_2
         - service: notify.ios_iphonem
           data:
             title: "Home Assistant"
@@ -250,9 +250,9 @@
       action:
         # - delay: '00:{{ (range(1, 59)|random|int) }}:00'
         - service: homeassistant.turn_off
-          entity_id: switch.luces_jardin_switch
+          entity_id: switch.fibaro_system_fgs223_double_relay_switch
         - service: homeassistant.turn_off
-          entity_id: switch.luces_jardin_switch_2
+          entity_id: switch.fibaro_system_fgs223_double_relay_switch_2
         - service: notify.ios_iphonem
           data:
             title: "Home Assistant"
@@ -281,9 +281,9 @@
                   below: 10
       action:
         - service: homeassistant.turn_on
-          entity_id: switch.luces_jardin_switch
+          entity_id: switch.fibaro_system_fgs223_double_relay_switch
         - service: homeassistant.turn_on
-          entity_id: switch.luces_jardin_switch_2
+          entity_id: switch.fibaro_system_fgs223_double_relay_switch_2
         - service: notify.ios_iphonem
           data:
             title: "Home Assistant"
@@ -307,9 +307,9 @@
             above: 10
       action:
         - service: homeassistant.turn_off
-          entity_id: switch.luces_jardin_switch
+          entity_id: switch.fibaro_system_fgs223_double_relay_switch
         - service: homeassistant.turn_off
-          entity_id: switch.luces_jardin_switch_2
+          entity_id: switch.fibaro_system_fgs223_double_relay_switch_2
         - service: notify.ios_iphonem
           data:
             title: "Home Assistant"
